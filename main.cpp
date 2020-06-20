@@ -49,9 +49,9 @@ int main(int argc, char const *argv[])
     
     string line;
 
-    // FileManager fm;
+    FileManager fm;
 	// Create a brand new file
-	// FileHandler fh = fm.CreateFile("temp.txt");
+	FileHandler fh = fm.CreateFile("temp.txt");
     // fm.CloseFile(fh);
 	// cout << "File created " << endl;
 	
@@ -68,20 +68,20 @@ int main(int argc, char const *argv[])
             while (iss >> px) {
                 p.push_back(px);
             }
-            tree.insert(p);
-            FileManager fm;
+            tree.insert(p,fh,fm);
 
+            // FileManager fm;
             // tree.insert(p, fm, fh);
 
             // Reopen the same file, but for reading this time
-            FileHandler fh = fm.OpenFile ("temp.txt");
+            // FileHandler fh = fm.OpenFile ("temp.txt");
             // cout << "File opened" << endl;
 
             // Get the very first page and its data
-            PageHandler ph = fh.FirstPage ();
-            char *data = ph.GetData ();
+            // PageHandler ph = fh.FirstPage ();
+            // char *data = ph.GetData ();
 
-            cout<<"done"<<endl;
+            // cout<<"done"<<endl;
             // Node n(0,-1);
             // cout<<" "<< sizeof(n)<<endl;
             // // Output the first integer
@@ -89,7 +89,7 @@ int main(int argc, char const *argv[])
             // int n;
             // memcpy (&n, &data[0], sizeof(n));
             // cout << "First number: " << n.id <<" " << endl;
-            fm.CloseFile(fh);
+            // fm.CloseFile(fh);
 	        // fm.DestroyFile ("temp.txt");
 
         } else if (op == "QUERY") {

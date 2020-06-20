@@ -76,7 +76,7 @@ public:
         max_num_nodes = floor(PAGE_CONTENT_SIZE/node_size);
         num_nodes=0;
     }
-    void insert(vector<int> p); // at the end - update root
+    void insert(vector<int> p, FileHandler& fh, FileManager& fm); // at the end - update root
 
     ~RTree(){};
     // void insert(vector<int> p, FileManager fm,FileHandler fh); // at the end - update root
