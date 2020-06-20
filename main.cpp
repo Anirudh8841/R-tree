@@ -34,18 +34,27 @@ storing node in page ( suppose given maxCap=K and Dimension=d ):
 
 int main(int argc, char const *argv[])
 {
-    if (argc != 4) {
-        cout << "usage: ./rtree query.txt maxCap output.txt" << endl;
+    if (argc != 5) {
+        cout << "usage: ./rtree query.txt maxCap d output.txt" << endl;
         return 1;
     }
 
     string inputFile = argv[1];
     int maxCap = stoi(argv[2]);
-    string outputFile = argv[3];
+    int dimension = stoi(argv[3]);
+    string outputFile = argv[4];
 
-    RTree tree(0, maxCap);
+    RTree tree(0, maxCap,dimension);
     std::ifstream infile(inputFile);
+    
     string line;
+
+    // FileManager fm;
+	// Create a brand new file
+	// FileHandler fh = fm.CreateFile("temp.txt");
+    // fm.CloseFile(fh);
+	// cout << "File created " << endl;
+	
     while (getline(infile, line))
     {
         istringstream iss(line);
@@ -60,6 +69,29 @@ int main(int argc, char const *argv[])
                 p.push_back(px);
             }
             tree.insert(p);
+            FileManager fm;
+
+            // tree.insert(p, fm, fh);
+
+            // Reopen the same file, but for reading this time
+            FileHandler fh = fm.OpenFile ("temp.txt");
+            // cout << "File opened" << endl;
+
+            // Get the very first page and its data
+            PageHandler ph = fh.FirstPage ();
+            char *data = ph.GetData ();
+
+            cout<<"done"<<endl;
+            // Node n(0,-1);
+            // cout<<" "<< sizeof(n)<<endl;
+            // // Output the first integer
+            // // cout<< sizeof(n)<<endl;
+            // int n;
+            // memcpy (&n, &data[0], sizeof(n));
+            // cout << "First number: " << n.id <<" " << endl;
+            fm.CloseFile(fh);
+	        // fm.DestroyFile ("temp.txt");
+
         } else if (op == "QUERY") {
             continue;
         }

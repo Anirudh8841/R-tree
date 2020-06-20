@@ -1,0 +1,124 @@
+In this assignment we have to store multiple d dimensional points and have to build tree using R-tree algorithm. 
+This tree will be helpful in restricting the spatial domain of search when we want to search a point.
+The points are stored in leaves in this tree.
+
+How does search work is basically we store lower and upper bound in each dimension (denoted this as MBR) and update it according to insert.
+The root's lower and upper bound in each dimension will be such that all the points stored in the leafs will be
+inside those bounds (This is true for each dimension).
+This will hold true for the non-leaf nodes too i.e. the leaf nodes below that non-leaf node will be bounded by the MBR of
+that non-leaf node.
+
+
+The summary of what to do in assignment is below:
+
+
+A) First of all create a Node class:
+
+	Class Node:
+		int nodeID;
+		int parentID; //for root parentID=-1
+		vector<int> minMBR; //the lowerbound of MBR in each dimension so len(minMBR) = len(maxMBR) = d
+		vector<int> maxMBR; // the upperbound of MBR in each dimension
+		vector<Entry> children;
+
+	struct Entry:
+		vector<int> minmbr;
+	    vector<int> maxmbr;
+	    int id;
+
+
+
+B) 
+	Then we have to think of how to store a node in the page. 
+	We are told that we have to fullfill each node to the limit maxCap children. 
+	I mean if there are less children than maxCap then we have to fill them with MIN_INT.
+	Hence a node will occupy a fixed size space when we are given maxCap and dimension of points.
+
+	storing node in page ( suppose given maxCap = K and Dimension = d ) (Here LB stands for Lower Bound and UB stands for Upper Bound):
+
+	    nodeID, parentID,
+	    node_MBR_LB1, node_MBR_LB2, ... , node_MBR_LBd ,
+	    node_MBR_UP1, node_MBR_UB2, ... , node_MBR_UBd , 
+
+	    child1_ID, child2_ID, ... ,childK_ID ,
+
+	    child1_MBR_LB1, child1_MBR_LB2, ... , child1_MBR_LBd ,
+	    child1_MBR_UB1, child1_MBR_UB2, ... , child1_MBR_UBd ,
+
+	    child2_MBR_LB1, child2_MBR_LB2, ... , child2_MBR_LBd ,
+	    child2_MBR_UB1, child2_MBR_UB2, ... , child2_MBR_UBd ,
+	    .
+	    .
+	    .
+	    childK_MBR_LB1, childK_MBR_LB2, ... , childK_MBR_LBd ,
+	    childK_MBR_UB1, childK_MBR_UB2, ... , childK_MBR_UBd 
+
+
+
+	    TOTAL space used = (2K+3)d + 2 integers
+
+
+In case of leaf node the child1_ID, child2_ID, ... ,childK_ID  will all be -1 (because they don't have child).
+
+
+C) Create a TREE class which will have a default rootID=0 on creation. 
+   When we insert a point in this TREE the rootID will update accordingly. 
+   It updates only when new root is created by splitting.
+
+D) Now think of insert function, suppose we have created a TREE T and at very first we are given a d dimensional point P to insert in T,
+   where P = [p1, p2, ..., pd]
+   Since there is no node initially so we have to create a new root node object. The node object will be created as such:
+
+   		nodeID = 0
+   		parentID = -1 //since it is root initially
+   		minMBR = [p1, p2, ..., pd]
+   		maxMBR = [p1, p2, ..., pd]  //MBR lower and upper bounds will be the point itself initially
+
+   		children vector will have only 1 entry (the point P)
+   		and that entry will have : 
+   			minMBR = [p1, p2, ..., pd]
+   			maxMBR = [MIN_INT, MIN_INT, ..., MIN_INT]
+   			id = -1 //since its leaf
+
+	Size =  K(2d+1)+2d+2 = 2+K+d(2K+2)
+
+E)	After creating a node we have to store that node in a page. We know from point (B) that each node occupies (2K+3)d+2 integers space. 
+	Lets denote this size as S (size of a node) = (2K+3)d+2
+	Pages are stored in a file, when its the first node we have to create a file F using FileManager they have given. It gives us a file handler
+	and we use that file handler to create page, destroy page, etc inside that file. Code below creates fileHandler given filename:
+		
+		FileManager fm;
+		FileHandler fh = fm.OpenFile ("filename");
+		
+
+	PageHandler helps in handling a page. When we are dealing with very first node we have to create the first page to store that node.
+	PageHandler is created with:
+	
+		PageHandler ph = fh.FirstPage ();
+
+
+	Assignment statement says that a node will not be split in two pages if its is splitting then we have to store it in new page entirely
+	instead of splitting. So we can safely assume that node_size will always be less than page_size.
+	So each page can contain these many nodes: M = floor(PAGE_CONTENT_SIZE / S)
+
+	Now we can start assigning the ID to a node, this ID is basically the node creation number. So root will get ID=0, next node will get ID=1, etc.
+
+
+	So when we know ID of a node we can fetch the data of this node from the file using fileHandler fh.
+	We just need to know in which page number(PN) this node lies and what is the starting offset (O).
+	Using that we can get:
+		PageHandler ph = fh.PageAt(PN);
+		char* pointer = ph.GetData();
+	
+	Iterate through pointer and skip O*S integers where S is size of node.
+
+	To get the Page number(PN) containing this node: PN = floor(ID / M)
+	To get the Offset(O) in the page: O = ID % M
+
+
+
+F) INSERTION:
+
+	//To be continued...
+
+

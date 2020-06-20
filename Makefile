@@ -23,5 +23,6 @@ main.o : main.cpp
 
 clean :
 	rm -f *.o
+	rm -f temp.txt
 	# rm -f sample_run
 	rm -f rtree
