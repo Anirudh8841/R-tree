@@ -5,11 +5,9 @@ int maxCap=0 ,d=0,node_size=0,num_nodes=0,max_num_nodes=0;
 void RTree::insert(vector<int> p, FileHandler& fh, FileManager& fm){
     //root node
     if(num_nodes==0){
-        // FileManager fm;
-	    // FileHandler fh = fm.CreateFile("temp.txt");
+
         PageHandler ph = fh.NewPage();
         char *data = ph.GetData ();
-        // int num=14;
         Node num(0,-1);
 
         memcpy (&data[0], &num.id, sizeof(int));
@@ -45,15 +43,22 @@ void RTree::insert(vector<int> p, FileHandler& fh, FileManager& fm){
             }   
         }
 
-
         fh.FlushPages ();
-	    // cout << "Data written and flushed "<< sizeof(num) << endl;
-        fm.CloseFile(fh);
+        num_nodes++;
+
+        // fm.CloseFile(fh);
 
     }
     else{
-
+        int nn = num_nodes/max_num_nodes;
+        PageHandler ph = fh.PageAt(nn);
+        char *data = ph.GetData ();
+        int nodes_in_page = num_nodes%max_num_nodes;
+        int mem_offset = nodes_in_page*(node_size);
+        
+        if()
     }
+    
 }
 // void RTree::insert(vector<int> p,FileManager fm,FileHandler fh){
     //root node
