@@ -49,32 +49,17 @@ public:
     };
 
 };
-// vector<int> fetch(int i,Node nn){
+Node fetch(int i,Node& nn){
 
-//     Node n(5,-1);
-//     nn.id = n.id;
-//     return n;
-// }
+    Node n(5,-1);
+    nn.id = n.id;
+    return n;
+}
 // void insertPoint()
 int main(){
 
-    Node currNode(10,-1);
-    // Node n1 = fetch(1,n);
-    int count=0;
-    for(Entry child : currNode.children){
-
-        cout<<"id "<< count<<endl;
-        count++;
-
-        if(child.id==currNode.id){
-
-            for(int i=0;i<d;i++){
-                child.minmbr[i] = min(child.minmbr[i], currNode.minmbr[i]);
-                child.maxmbr[i] = max(child.maxmbr[i], currNode.maxmbr[i]);
-            }
-
-            break;
-        }
-    }
+    Node n(10,-1);
+    Node n1 = fetch(1,n);
+    cout<<"id "<< n.id<<endl;
     return 0;
 }

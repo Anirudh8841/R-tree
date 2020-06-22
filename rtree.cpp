@@ -107,6 +107,19 @@ void updateParentOnDisk(int nodeID, int new_parentID, FileHandler& fh ){
     save(node,fh);
 }
 
+void generateMinimum(const vector<int>& v1,const vector<int>& v2, vector<int>& result){
+    result.clear();
+    for(int i=0; i<v1.size(); i++){
+        result.push_back(min(v1[i], v2[i]));
+    }
+}
+void generateMaximum(const vector<int>& v1, const vector<int>& v2, vector<int> result){
+    result.clear();
+    for(int i=0; i<v1.size(); i++){
+        result[i] = max(v1[i], v2[i]);
+    }
+}
+
 void simpleBubbleUpToTheRoot(Node currNode, FileHandler& fh){
     if(currNode.parent_id==-1){
         //no parent so no need to do anything
@@ -137,6 +150,28 @@ void simpleBubbleUpToTheRoot(Node currNode, FileHandler& fh){
 
     save(parentNode,fh); //since parentNode is changed so update it in page
     simpleBubbleUpToTheRoot(parentNode,fh); //recurse
+}
+
+void incorporate_child_mbr(Node& node, Entry child){
+    for(int i=0;i<d;i++){
+        node.minmbr[i] = min(node.minmbr[i], child.minmbr[i]);
+        node.maxmbr[i] = max(node.maxmbr[i], child.maxmbr[i]);
+    }
+}
+bool entry_eq(Entry e1,Entry e2){
+   
+    if(e1.minmbr.size()!=e2.minmbr.size() || e1.maxmbr.size()!=e2.maxmbr.size()){
+        return false;
+    }
+    if(e1.id!=e2.id){
+        return false;
+    }
+    for(int i=0;i<e1.minmbr.size();i++){
+        if(e1.minmbr[i]!=e2.minmbr[i] || e1.maxmbr[i]!= e2.maxmbr[i]){
+            return false;
+        }
+    }
+    return true;
 }
 void addChild(Node& currNode, int childID,const vector<int> &child_minmbr,const vector<int> &child_maxmbr, FileHandler& fh){
     //calculate the count of valid children in currNode
@@ -228,114 +263,117 @@ void addChild(Node& currNode, int childID,const vector<int> &child_minmbr,const 
         //go over to entries of the E_set and assign them to the group1/L1 or group2/L2
         //on the basis of which group causes least increase in volume
        
-    //     for(Entry child: E_set){
-    //         if(child==e1 || child==e2){
-    //             continue; //already added these two
-    //         }
 
-    //         long double childVol = calculateVolume(child.minmbr, child.maxmbr);
-    //         long double newVol1 = calculateVolume( generateMinimum(child.minmbr, L1.minmbr), 
-    //                                                generateMaximum(child.maxmbr, L1.maxmbr) );
+        for(Entry child: E_set){
+            
+            if(entry_eq(child,e1) || entry_eq(child,e2)){
+                continue; //already added these two
+            }
 
-    //         long double newVol2 = calculateVolume( generateMinimum(child.minmbr, L2.minmbr), 
-    //                                                generateMaximum(child.maxmbr, L2.maxmbr) );
+            long double childVol = calculateVolume(child.minmbr, child.maxmbr);
+            vector<int> r1,r2;
+            generateMinimum(child.minmbr, L1.minmbr,r1);
+            generateMaximum(child.maxmbr, L1.maxmbr,r2);
 
-    //         long double increase1 = abs(newVol1-childVol);
-    //         long double increase2 = abs(newVol2-childVol);
+            long double newVol1 = calculateVolume( r1,r2 );
 
-    //         if(increase1<increase2){
-    //             group1.push_back(child);
-    //             incorporate_child_mbr(L1,child);
-    //         }
-    //         else if(increase1>increase2){
-    //             group2.push_back(child);
-    //             incorporate_child_mbr(L2,child);
-    //         }
-    //         else{
-    //             //tie breaker case 1
-    //             long double L1Vol = calculateVolume(L1.minmbr, L1.maxmbr);
-    //             long double L2Vol = calculateVolume(L2.minmbr, L2.maxmbr);
-    //             if(L1Vol<L2Vol){
-    //                 group1.push_back(child);
-    //                 incorporate_child_mbr(L1,child);
-    //             }
-    //             else if(L2Vol<L1Vol){
-    //                 group2.push_back(child);
-    //                 incorporate_child_mbr(L2,child);
-    //             }
-    //             else{
-    //                 //tie breaker case 2
-    //                 if(group1.size()<group2.size()){
-    //                     group1.push_back(child);
-    //                     incorporate_child_mbr(L1,child);
-    //                 }
-    //                 else{
-    //                     group2.push_back(child);
-    //                     incorporate_child_mbr(L2,child);
-    //                 }
-    //             }
-    //         }
-    //     }
+            generateMinimum(child.minmbr, L2.minmbr,r1);
+            generateMaximum(child.maxmbr, L2.maxmbr,r2);
+            long double newVol2 = calculateVolume( r1, r2 );
+
+            long double increase1 = abs(newVol1-childVol);
+            long double increase2 = abs(newVol2-childVol);
+
+            if(increase1<increase2){
+                group1.push_back(child);
+                incorporate_child_mbr(L1,child);
+            }
+            else if(increase1>increase2){
+                group2.push_back(child);
+                incorporate_child_mbr(L2,child);
+            }
+            else{
+                //tie breaker case 1
+                long double L1Vol = calculateVolume(L1.minmbr, L1.maxmbr);
+                long double L2Vol = calculateVolume(L2.minmbr, L2.maxmbr);
+                if(L1Vol<L2Vol){
+                    group1.push_back(child);
+                    incorporate_child_mbr(L1,child);
+                }
+                else if(L2Vol<L1Vol){
+                    group2.push_back(child);
+                    incorporate_child_mbr(L2,child);
+                }
+                else{
+                    //tie breaker case 2
+                    if(group1.size()<group2.size()){
+                        group1.push_back(child);
+                        incorporate_child_mbr(L1,child);
+                    }
+                    else{
+                        group2.push_back(child);
+                        incorporate_child_mbr(L2,child);
+                    }
+                }
+            }
+        }
 
     //     //update the children of L1 and L2
-    //     L1.children = group1;
-    //     L2.children = group2;
+        L1.children = group1;
+        L2.children = group2;
 
     //     //save nodes L1 and L2 to page
-    //     saveNodeOnDisk(L1);
-    //     saveNodeOnDisk(L2);
+        save(L1,fh);
+        save(L2,fh);
 
     //     //for entries in group1 abd group2 and update their parents
-    //     for(Entry e : group1){
-    //         updateParentOnDisk(e.id,L1.id); //updates parent id of node having id = e.id 
-    //     }
-    //     for(Entry e : group2){ updateParentOnDisk(e.id,L2.id);}
+        for(Entry e : group1){
+            updateParentOnDisk(e.id,L1.id,fh); //updates parent id of node having id = e.id 
+        }
+        for(Entry e : group2){ updateParentOnDisk(e.id,L2.id,fh);}
 
 
-    //     //since we have created a new child L2
-    //     //we call addChild function to the parent of currNode/L1
-    //     int parent_id = L1.parent_id;
-    //     if(parent_id==-1){
-    //         //means this is root
-    //         //so new root creation happens
-    //         Node newRoot = new Node(T.num_nodes, -1);
-    //         T.num_nodes = T.num_nodes+1;
+        //since we have created a new child L2
+        //we call addChild function to the parent of currNode/L1
+        int parent_id = L1.parent_id;
+        if(parent_id==-1){
+            //means this is root
+            //so new root creation happens
+            Node newRoot(num_nodes, -1);
+            num_nodes = num_nodes+1;
 
-    //         //create two entries for newRoot
-    //         Entry ent1 = new Entry(L1.id);
-    //         Entry ent2 = new Entry(L2.id);
-    //         ent1.minmbr = L1.minmbr.copy();
-    //         ent1.maxmbr = L1.maxmbr.copy();
-    //         ent2.minmbr = L2.minmbr.copy();
-    //         ent2.maxmbr = L2.maxmbr.copy();
+            //create two entries for newRoot
+            Entry ent1(L1.id);
+            Entry ent2(L2.id);
+            ent1.minmbr = L1.minmbr;
+            ent1.maxmbr = L1.maxmbr;
+            ent2.minmbr = L2.minmbr;
+            ent2.maxmbr = L2.maxmbr;
 
-    //         //update MBR of newRoot
-    //         for(int i=0;i<d;i++){
-    //             newRoot.minmbr[i] = min(newRoot.minmbr[i], L1.minmbr[i], L2.minmbr[i]);
-    //             newRoot.maxmbr[i] = min(newRoot.maxmbr[i], L1.maxmbr[i], L2.maxmbr[i]);
-    //         }
+            //update MBR of newRoot
+            for(int i=0;i<d;i++){
+                newRoot.minmbr[i] = min(newRoot.minmbr[i], min(L1.minmbr[i], L2.minmbr[i]));
+                newRoot.maxmbr[i] = max(newRoot.maxmbr[i], max(L1.maxmbr[i], L2.maxmbr[i]));
+            }
 
-    //         //add the two children to newRoot
-    //         newRoot.children[0] = ent1;
-    //         newRoot.children[1] = ent2;
-    //         updateParentOnDisk(ent1.id, newRoot.id);
-    //         updateParentOnDisk(ent2.id, newRoot.id);
+            //add the two children to newRoot
+            newRoot.children[0] = ent1;
+            newRoot.children[1] = ent2;
+            updateParentOnDisk(ent1.id, newRoot.id,fh);
+            updateParentOnDisk(ent2.id, newRoot.id,fh);
 
-    //         saveNodeOnDisk(newRoot);
-    //     }
-    //     else{
-    //         Node parentNode = fetchNodeFromDisk(parent_id);
+            save(newRoot,fh);
+        }
+        else{
+            Node parentNode = fetch(parent_id,fh);
+            //update MBR of parent first by incorporating L1 and L2 and then call addChild
+            for(int i=0;i<d;i++){
+                parentNode.minmbr[i] = min(parentNode.minmbr[i], min(L1.minmbr[i], L2.minmbr[i]));
+                parentNode.maxmbr[i] = max(parentNode.maxmbr[i], max(L1.maxmbr[i], L2.maxmbr[i]));
+            }
 
-    //         //update MBR of parent first by incorporating L1 and L2 and then call addChild
-    //         for(int i=0;i<d;i++){
-    //             parentNode.minmbr[i] = min(parentNode.minmbr[i], L1.minmbr[i], L2.minmbr[i]);
-    //             parentNode.maxmbr[i] = min(parentNode.maxmbr[i], L1.maxmbr[i], L2.maxmbr[i]);
-    //         }
-
-    //         addChild(parentNode, L2.id, L2.minmbr, L2.maxmbr);
-    //     }
-
-
+            addChild(parentNode, L2.id, L2.minmbr, L2.maxmbr,fh);
+        }
     }
 
 }
@@ -404,21 +442,9 @@ void RTree::insert(const vector<int>& p, FileHandler& fh, FileManager& fm){
     }
     else{
         Node rootNode = fetch(root_id,fh);
-        insert_and_update(&rootNode, p);
+        insert_and_update(rootNode, p,fh);
 
-        // int nn = num_nodes/max_num_nodes;
-        // PageHandler ph = fh.PageAt(nn);
-        // char *data = ph.GetData ();
-        // int nodes_in_page = num_nodes%max_num_nodes;
-        // int mem_offset = nodes_in_page*(node_size);
-
-        // // check if 
-        // if(PAGE_CONTENT_SIZE-mem_offset >= node_size){
-
-        // }
-        // else{
-        //     //shift to next page
-        // }
+        
     }
     
 }
