@@ -1,25 +1,16 @@
-#ifndef RTREE_H
-#define RTREE_H
-
-#include <iostream>
+#include<iostream>
 #include <bits/stdc++.h> 
-#include "file_manager.h"
 
 using namespace std;
 
-extern int root_id, maxCap,d,num_nodes, max_num_nodes;
-
-extern int node_size;
+int maxCap =10,d=2;
 
 struct Entry
 {
     vector<int> minmbr;
     vector<int> maxmbr;
     int id;
-    Entry(){
-        // minmbr =  vector<int>(d,INT_MAX);
-        // maxmbr =  vector<int>(d,INT_MIN);
-    }
+    
     Entry(int i){
         minmbr =  vector<int>(d,INT_MAX);
         maxmbr =  vector<int>(d,INT_MIN);
@@ -58,30 +49,32 @@ public:
     };
 
 };
+// vector<int> fetch(int i,Node nn){
 
-class RTree
-{
-public:
-    // RTree();
-    // we will use initial root as 0 and leaf node children -1
-    // int root;
-    // Node fetch(int id, FileHandler& fh);
+//     Node n(5,-1);
+//     nn.id = n.id;
+//     return n;
+// }
+// void insertPoint()
+int main(){
 
-    RTree(int id, int maxChild,int dimension)
-    {
-        maxCap = maxChild;
-        d = dimension;
+    Node currNode(10,-1);
+    // Node n1 = fetch(1,n);
+    int count=0;
+    for(Entry child : currNode.children){
 
-        node_size =  sizeof(Node(0,-1));
-        
-        max_num_nodes = floor(PAGE_CONTENT_SIZE/node_size);
-        num_nodes=0;
+        cout<<"id "<< count<<endl;
+        count++;
+
+        if(child.id==currNode.id){
+
+            for(int i=0;i<d;i++){
+                child.minmbr[i] = min(child.minmbr[i], currNode.minmbr[i]);
+                child.maxmbr[i] = max(child.maxmbr[i], currNode.maxmbr[i]);
+            }
+
+            break;
+        }
     }
-    void insert(const vector<int>& p, FileHandler& fh, FileManager& fm); // at the end - update root
-
-    ~RTree(){};
-    // void insert(vector<int> p, FileManager fm,FileHandler fh); // at the end - update root
-
-};
-
-#endif
+    return 0;
+}

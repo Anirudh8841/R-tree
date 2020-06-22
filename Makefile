@@ -1,7 +1,8 @@
 sampleobjects = buffer_manager.o file_manager.o rtree.o main.o
+# sampleobjects = buffer_manager.o file_manager.o sample_run.o rtree.o main.o
 
 # sample_run : $(sampleobjects)
-# 	     g++ -std=c++11 -o sample_run $(sampleobjects)
+# 	    g++ -std=c++11 -o sample_run $(sampleobjects)
 
 rtree : $(sampleobjects)
 	     g++ -std=c++11 -o rtree $(sampleobjects)
