@@ -72,14 +72,14 @@ public:
         maxCap = maxChild;
         d = dimension;
 
-        node_size =  sizeof(Node(0,-1));
+        node_size =  (2*maxCap+2+maxCap*(2*d+1))*4;
         
         max_num_nodes = floor(PAGE_CONTENT_SIZE/node_size);
         num_nodes=0;
     }
     void insert(const vector<int>& p, FileHandler& fh); // at the end - update root
     bool query(const vector<int>& p, FileHandler& fh); // at the end - update root
-    // void bulkload(int num, FileHandler& fo, FileHandler& fh); // at the end - update root
+    void bulkload(int num, FileHandler& fo, FileHandler& fh); // at the end - update root
 
     ~RTree(){};
     // void insert(vector<int> p, FileManager fm,FileHandler fh); // at the end - update root

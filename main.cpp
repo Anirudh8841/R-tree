@@ -62,7 +62,8 @@ int main(int argc, char const *argv[])
         string op;
         iss >> op;
         if (op == "BULKLOAD") {
-            cout<<"entered"<<endl;
+            cout<<" BULK"<<endl;
+            continue;
             string infile ;
             int num;
             iss>> infile;
@@ -73,15 +74,16 @@ int main(int argc, char const *argv[])
             FileHandler f = fm.OpenFile(infile.c_str());
 
             // tree.bulkload(num,f,fh);
-            continue;
         } else if (op == "INSERT") {
+            cout<<"INSERT"<<endl;
             vector<int> p;
             int px;
             while (iss >> px) {
                 p.push_back(px);
             }
             tree.insert(p,fh);
-            cout<<"inserted"<<endl;
+            
+            // cout<<"inserted "<< fh.LastPage().GetPageNum()<<endl;
 
             // FileManager fm;
             // tree.insert(p, fm, fh);
@@ -113,10 +115,10 @@ int main(int argc, char const *argv[])
             }
             bool que = tree.query(p,fh);
             if(que){
-                cout << "present"<< endl;
+                cout << "TRUE"<< endl;
             }
             else{
-                cout<<" not present"<<endl;
+                cout<<"FALSE"<<endl;
             }
         }
     }
