@@ -55,6 +55,7 @@ int main(int argc, char const *argv[])
 	FileHandler fh = fm.CreateFile("temp.txt");
     // fm.CloseFile(fh);
 	// cout << "File created " << endl;
+    int count=0;
 	
     while (getline(infile, line))
     {
@@ -75,7 +76,8 @@ int main(int argc, char const *argv[])
 
             // tree.bulkload(num,f,fh);
         } else if (op == "INSERT") {
-            cout<<"INSERT"<<endl;
+            count++;
+            cout<<"INSERT "<<count <<endl;
             vector<int> p;
             int px;
             while (iss >> px) {

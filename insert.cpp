@@ -58,8 +58,8 @@ Node fetch(int i,Node& nn){
 // void insertPoint()
 int main(){
 
-    Node n(10,-1);
-    Node n1 = fetch(1,n);
-    cout<<"id "<< n.id<<endl;
-    return 0;
+   for(int i=0;i<100;i++){
+        cout << "INSERT "<< i+1 << " "<<i+2<<endl;
+        cout << "QUERY "<< i+1 << " "<<i+2<<endl;
+   }
 }

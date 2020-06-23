@@ -63,7 +63,7 @@ void save(Node node,FileHandler& fh){
     }
 
     char *data = ph.GetData ();
-
+    // cout << "saving n " << node.id <<" p "<< node.parent_id<<endl;
     memcpy (&data[offset],&node.id, sizeof(int));
 
     memcpy (&data[offset+4], &node.parent_id, sizeof(int));
@@ -115,7 +115,8 @@ long double calculateVolume(const vector<int> &minmbr, const vector<int>& maxmbr
 
 
 void updateParentOnDisk(int nodeID, int new_parentID, FileHandler& fh ){
-    if(nodeID=-1){
+    // cout<<"update n "<< nodeID<<" p "<< new_parentID<<endl;
+    if(nodeID==-1){
         return;
     }  
     Node node = fetch(nodeID,fh);
@@ -386,12 +387,25 @@ void addChild(Node& currNode, int childID,const vector<int> &child_minmbr,const 
         }
         else{
             Node parentNode = fetch(parent_id,fh);
+            for(int i=0;i<parentNode.children.size();i++){
+                if(parentNode.children[i].id==L1.id){
+                    for(int j=0;j<d;j++){
+                        parentNode.children[i].minmbr[j] = L1.minmbr[j];
+                        parentNode.children[i].maxmbr[j] = L1.maxmbr[j];
+                    }
+                    break;
+                }
+            }
+            
             //update MBR of parent first by incorporating L1 and L2 and then call addChild
             for(int i=0;i<d;i++){
                 parentNode.minmbr[i] = min(parentNode.minmbr[i], min(L1.minmbr[i], L2.minmbr[i]));
                 parentNode.maxmbr[i] = max(parentNode.maxmbr[i], max(L1.maxmbr[i], L2.maxmbr[i]));
             }
+            save(parentNode, fh);
+            
 
+            
             addChild(parentNode, L2.id, L2.minmbr, L2.maxmbr,fh);
         }
     }
@@ -399,6 +413,7 @@ void addChild(Node& currNode, int childID,const vector<int> &child_minmbr,const 
 }
 void insert_and_update(Node& currNode,const vector<int>& P, FileHandler& fh){
     if(currNode.children[0].id==-1){
+        // cout<<"cas1 "<< currNode.id<<endl;
         for(int i=0;i<d;i++){
             currNode.minmbr[i] = min(currNode.minmbr[i],P[i]);
             currNode.maxmbr[i] = max(currNode.maxmbr[i],P[i]);
@@ -406,11 +421,18 @@ void insert_and_update(Node& currNode,const vector<int>& P, FileHandler& fh){
         addChild(currNode,-1,P,P,fh);
     }
     else{
+        // cout<<"started "<< currNode.id<< endl;
         Entry min_MBR_child;
         long double volumeIncrease = LDBL_MAX; //long double because volume will be very large
         long double tiebreaker1Vol = LDBL_MAX; //long double because volume will be very large
 
         for(Entry child : currNode.children){
+            // cout<<"for "<<child.id<<endl;
+            if(child.minmbr[0]==INT_MAX && child.maxmbr[0]==INT_MIN){
+				//means this is just a place filler child
+				//and the upcoming ones will also be place fillers
+				break;
+			}
             //if we choose this child then how much volume do we have to increase
             //basically the difference of change in MBR's volume
             
@@ -423,12 +445,16 @@ void insert_and_update(Node& currNode,const vector<int>& P, FileHandler& fh){
             long double diff = newVol-oldVol;
 
             if(diff<volumeIncrease){
+                // cout<<"cas_1 "<< child.id <<endl;
                 min_MBR_child = child;
                 volumeIncrease = diff;
             }
             else if(diff==volumeIncrease){
+
                 //tie breaker 1, i.e. volumeIncrease is same so we need will choose that child which has lower volume
                 if(oldVol<tiebreaker1Vol){
+                    // cout<<"cas_2 "<< child.id <<endl;
+
                     min_MBR_child = child;
                     tiebreaker1Vol = oldVol;
                 }
@@ -452,6 +478,8 @@ void insert_and_update(Node& currNode,const vector<int>& P, FileHandler& fh){
                     // int index1 = find(currNode.children.begin(),currNode.children.begin(),min_MBR_child) - currNode.children.begin();
                     // int index2 = find(currNode.children.begin(),currNode.children.begin(),child) - currNode.children.begin();
                     if(index2<index1){
+                        // cout<<"cas_3 "<< child.id <<endl;
+
                         min_MBR_child = child;
                     }
                     
@@ -460,6 +488,7 @@ void insert_and_update(Node& currNode,const vector<int>& P, FileHandler& fh){
         }
         //use the id of this child to traverse down the tree
         int child_id = min_MBR_child.id;
+        // cout<<"cas20 "<< child_id <<endl;
         Node nextNode = fetch(child_id,fh); //fetchNodeFromDisk is some fetch function which you have implemented
         insert_and_update(nextNode,P,fh); 
 
@@ -468,7 +497,55 @@ void insert_and_update(Node& currNode,const vector<int>& P, FileHandler& fh){
     }
 }
 
+void print_node(Node node){
+    cout << "node_id: "<< node.id<< " node_parent_id: "<<node.parent_id<<endl;
+    cout << "minmbrs: (";
+    for(int i=0;i<d;i++){
+        cout<< node.minmbr[i]<<",";
+    }
+    cout<<") , maxmbrs: (";
+    for(int i=0;i<d;i++){
+        cout<< node.maxmbr[i]<<",";
+    }
+    cout<<")"<<endl;
+    for(int i=0;i<maxCap;i++){
+        if(node.children[i].minmbr[0]==INT_MAX && node.children[i].maxmbr[0]==INT_MIN){
+            //means this is just a place filler child
+            //and the upcoming ones will also be place fillers
+            break;
+        }
+        cout<< "child id = "<<node.children[i].id<< " , minmbr: (";
+        for(int j=0;j<d;j++){
+            cout<<node.children[i].minmbr[j]<<",";
+        }
+        cout<<") , maxmbrs: (";
+        for(int j=0;j<d;j++){
+             cout<<node.children[i].maxmbr[j]<<",";
+        }   
+        cout<<")"<<endl;
 
+    }
+    cout<<"node_ended"<<endl;
+
+}
+
+void print_tree(int nodeID,FileHandler&fh){
+    if(nodeID==-1){
+        return;
+    }
+    Node currNode = fetch(nodeID,fh);
+    print_node(currNode);
+    for(Entry child : currNode.children){
+        if(child.minmbr[0]==INT_MAX && child.maxmbr[0]==INT_MIN){
+            //means this is just a place filler child
+            //and the upcoming ones will also be place fillers
+            break;
+        }
+        print_tree(child.id,fh);
+    }
+    
+
+}
 
 void RTree::insert(const vector<int>& p, FileHandler& fh){
     //root node
@@ -516,83 +593,182 @@ void RTree::insert(const vector<int>& p, FileHandler& fh){
 
     }
     else{
-
         Node rootNode = fetch(root_id,fh);
         insert_and_update(rootNode, p,fh);
+
+        // cout<<" rioot "<<root_id<<endl;
+        
+    }
+    if(p[0]==100){
+    print_tree(root_id,fh);
+
     }
 }
 
 
+void print_vector(const vector<int>& vec){
+    cout<<" (";
+    for(int i=0;i<vec.size();i++){
+        cout<<vec[i]<<","; 
+    }
+    cout<<") "<<endl;
+}
+
 bool search(int nodeID, const vector<int>& P, FileHandler& fh){
-	//fetch the node node from disk using nodeID
+    //fetch the node node from disk using nodeID
+    // cout<<"on q1 "<< root_id<<endl; 
     Node currNode = fetch(nodeID,fh);
-    
-	if(currNode.children[0].id==-1){
-		//means the currNode is a leaf and its children are all points
 
-		//go over these children points and check whether our search point is among one of them or not
-		for(Entry child : currNode.children){
-			if(child.minmbr[0]==INT_MAX && child.maxmbr[0]==INT_MIN){
-				//means this is just a place filler child
-				//and the upcoming ones will also be place fillers
-				return false;
-			}
-			else{
-				//point is valid
-				//check whether this point is equal to P
-				bool equals = true;
-				for(int i=0;i<d;i++){
-					if(child.minmbr[i]!=P[i] || child.maxmbr[i]!=P[i]){
-						equals = false;
-						break;
-					}
-				}
 
-				if(equals){
-					return true;
-				}
-			}
-		}
+    bool liesInside_currNode = true;
+    for(int i=0;i<d;i++){
+        if(P[i] < currNode.minmbr[i] || P[i] > currNode.maxmbr[i]){
+            liesInside_currNode = false;
+            break;
+        }
+    }
 
-		return false;
-	}
+    if(!liesInside_currNode){
+        return false;
+    }
 
-	else{
-		//means currNode is not a leaf so we have to check children of this currNode
 
-		for(Entry child : currNode.children){
+    // cout << "startID: "<<nodeID<<endl;
 
-			//check whether child is valid or just a place filler
-			if(child.minmbr[0]==INT_MAX && child.maxmbr[0]==INT_MIN){
-				//means this is just a place filler child
-				//and the upcoming ones will also be place fillers
-				break;
-			}
-			else{
-				//if child is valid check if P lies inside this child's MBR in each dimension
-				//if it does then we recurse on that child
-				bool liesInside = true;
-				for(int i=0;i<d;i++){
-					if(P[i] < child.minmbr[i] || P[i] > child.maxmbr[i]){
-						liesInside = false;
-						break;
-					}
-				}
+    if(currNode.children[0].id==-1){
+        // cout << " CUR "<<currNode.id<<endl;
+        //means the currNode is a leaf and its children are all points
 
-				if(liesInside){
-					//P lies inside so recurse on this child
-					if( search(child.id, P,fh) ){
-						return true;
-					}
-				}
-			}
-		}
+        //go over these children points and check whether our search point is among one of them or not
+        for(Entry child : currNode.children){
+            if(child.minmbr[0]==INT_MAX && child.maxmbr[0]==INT_MIN){
+                //means this is just a place filler child
+                //and the upcoming ones will also be place fillers
+                return false;
+            }
+            else{
+                //point is valid
+                //check whether this point is equal to P
+                bool equals = true;
+                for(int i=0;i<d;i++){
+                    if(child.minmbr[i]!=P[i] || child.maxmbr[i]!=P[i]){
+                        equals = false;
+                        break;
+                    }
+                }
 
-		return false;
-	}
+                if(equals){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    else{
+        //means currNode is not a leaf so we have to check children of this currNode
+
+        for(Entry child : currNode.children){
+            //check whether child is valid or just a place filler
+            if(child.minmbr[0]==INT_MAX && child.maxmbr[0]==INT_MIN){
+                //means this is just a place filler child
+                //and the upcoming ones will also be place fillers
+                break;
+            }
+            else{
+                if(search(child.id,P,fh)){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 
 
 }
+// bool search(int nodeID, const vector<int>& P, FileHandler& fh){
+// 	//fetch the node node from disk using nodeID
+    
+//     Node currNode = fetch(nodeID,fh);
+//     for (int i = 0; i < d; i++)
+//     {
+//         if(P[i] < currNode.minmbr[i] || P[i] > currNode.maxmbr[i]){
+//             return false;
+//         }
+//     }
+
+    
+    
+// 	if(currNode.children[0].id==-1){
+//         // cout<<" if1 "<<nodeID<<endl;
+
+// 		//means the currNode is a leaf and its children are all points
+
+// 		//go over these children points and check whether our search point is among one of them or not
+// 		for(Entry child : currNode.children){
+// 			if(child.minmbr[0]==INT_MAX && child.maxmbr[0]==INT_MIN){
+// 				//means this is just a place filler child
+// 				//and the upcoming ones will also be place fillers
+// 				return false;
+// 			}
+// 			else{
+// 				//point is valid
+// 				//check whether this point is equal to P
+// 				bool equals = true;
+// 				for(int i=0;i<d;i++){
+// 					if(child.minmbr[i]!=P[i] || child.maxmbr[i]!=P[i]){
+// 						equals = false;
+// 						break;
+// 					}
+// 				}
+
+// 				if(equals){
+// 					return true;
+// 				}
+// 			}
+// 		}
+
+// 		return false;
+// 	}
+
+// 	else{
+// 		//means currNode is not a leaf so we have to check children of this currNode
+
+// 		for(Entry child : currNode.children){
+// 			//check whether child is valid or just a place filler
+// 			if(child.minmbr[0]==INT_MAX && child.maxmbr[0]==INT_MIN){
+// 				//means this is just a place filler child
+// 				//and the upcoming ones will also be place fillers
+// 				break;
+// 			}
+// 			else{
+// 				//if child is valid check if P lies inside this child's MBR in each dimension
+// 				//if it does then we recurse on that child
+// 				bool liesInside = true;
+
+// 				for(int i=0;i<d;i++){
+// 					if(P[i] < child.minmbr[i] || P[i] > child.maxmbr[i]){
+// 						liesInside = false;
+// 						break;
+// 					}
+// 				}
+
+// 				if(liesInside){
+// 					//P lies inside so recurse on this child
+// 					if( search(child.id, P,fh) ){
+// 						return true;
+// 					}
+// 				}
+// 			}
+// 		}
+
+// 		return false;
+// 	}
+
+
+// }
 
 bool RTree::query(const vector<int>& P, FileHandler& fh){
 	//fetch the node node from disk using nodeID
