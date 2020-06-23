@@ -13,8 +13,6 @@ Node fetch(int id,FileHandler& fh){
     char *data = ph.GetData ();
     Node node(0,-1);
 
-    root_id=0;
-
     memcpy (&node.id,&data[offset], sizeof(int));
     memcpy (&node.parent_id,&data[offset+4], sizeof(int));
 
@@ -267,6 +265,7 @@ void addChild(Node& currNode, int childID,const vector<int> &child_minmbr,const 
                 if(euclidDist>maxDistance){
                     maxDistance = euclidDist;
                     e1 = child1;
+                    
                     e2 = child2;
                 }
             }
@@ -274,7 +273,7 @@ void addChild(Node& currNode, int childID,const vector<int> &child_minmbr,const 
         // cout<< "came"<<endl;
 
         //now e1 gets added to L1 and e2 gets added to L2
-
+        
         vector<Entry> group1; //empty vector
         vector<Entry> group2; //empty vector
 
@@ -338,6 +337,7 @@ void addChild(Node& currNode, int childID,const vector<int> &child_minmbr,const 
             }
         }
     //     //update the children of L1 and L2
+
     for(int i=0;i<group1.size();i++){
         L1.children[i] = group1[i];
     }
@@ -348,8 +348,11 @@ void addChild(Node& currNode, int childID,const vector<int> &child_minmbr,const 
     // L2.children = group2;
 
     //     //save nodes L1 and L2 to page
+    cout<<"eh"<<endl;
         save(L1,fh);
+     cout<<"eh 1"<<endl;   
         save(L2,fh);
+    cout<<"eh 2"<<endl; 
 
 
     //     //for entries in group1 and group2 and update their parents
@@ -389,6 +392,7 @@ void addChild(Node& currNode, int childID,const vector<int> &child_minmbr,const 
             updateParentOnDisk(ent1.id, newRoot.id,fh);
             updateParentOnDisk(ent2.id, newRoot.id,fh);
             root_id = newRoot.id;
+            // cout<<"eh 3"<<endl; 
             save(newRoot,fh);
             
         }
@@ -537,9 +541,11 @@ void RTree::insert(const vector<int>& p, FileHandler& fh){
 
 bool search(int nodeID, const vector<int>& P, FileHandler& fh){
 	//fetch the node node from disk using nodeID
+    cout<<"on q1 "<< root_id<<endl; 
     Node currNode = fetch(nodeID,fh);
-
+    
 	if(currNode.children[0].id==-1){
+        // cout << " CUR "<<currNode.id<<endl;
 		//means the currNode is a leaf and its children are all points
 
 		//go over these children points and check whether our search point is among one of them or not
@@ -607,7 +613,7 @@ bool search(int nodeID, const vector<int>& P, FileHandler& fh){
 }
 
 bool RTree::query(const vector<int>& P, FileHandler& fh){
-    // cout<< max_num_nodes<<endl;
+    cout<< "on que "<<root_id<<endl;
 	//fetch the node node from disk using nodeID
     return search(root_id,P,fh);
 }
