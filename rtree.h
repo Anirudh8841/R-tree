@@ -79,7 +79,7 @@ public:
     }
     void insert(const vector<int>& p, FileHandler& fh); // at the end - update root
     bool query(const vector<int>& p, FileHandler& fh); // at the end - update root
-    void bulkload(int num, FileHandler& fo, FileHandler& fh); // at the end - update root
+    // void bulkload(int num, FileHandler& fo, FileHandler& fh); // at the end - update root
 
     ~RTree(){};
     // void insert(vector<int> p, FileManager fm,FileHandler fh); // at the end - update root
