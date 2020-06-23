@@ -1,0 +1,1 @@
+BULKLOAD Testcases/MY_TC/sorted.txt 100

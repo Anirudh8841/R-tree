@@ -62,7 +62,18 @@ int main(int argc, char const *argv[])
         string op;
         iss >> op;
         if (op == "BULKLOAD") {
-            continue;
+            cout<<"entered"<<endl;
+            string infile ;
+            int num;
+            iss>> infile;
+            iss>> num;
+            
+            cout<< num << " st "<<infile<< endl;
+
+            FileHandler f = fm.OpenFile(infile.c_str());
+
+            tree.bulkload(num,f,fh);
+            // continue;
         } else if (op == "INSERT") {
             vector<int> p;
             int px;
