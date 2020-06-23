@@ -63,21 +63,24 @@ int main(int argc, char const *argv[])
         string op;
         iss >> op;
         if (op == "BULKLOAD") {
-            cout<<" BULK"<<endl;
-            continue;
+            cout<<"BULKLOAD"<<endl;
+            cout<<endl;
             string infile ;
             int num;
             iss>> infile;
             iss>> num;
-            
+
             cout<< num << " st "<<infile<< endl;
 
             FileHandler f = fm.OpenFile(infile.c_str());
 
-            // tree.bulkload(num,f,fh);
+            tree.bulkload(num,f,fh);
+            
+
         } else if (op == "INSERT") {
             count++;
             cout<<"INSERT "<<count <<endl;
+            cout<<endl;
             vector<int> p;
             int px;
             while (iss >> px) {
@@ -118,9 +121,11 @@ int main(int argc, char const *argv[])
             bool que = tree.query(p,fh);
             if(que){
                 cout << "TRUE"<< endl;
+                cout<<endl;
             }
             else{
                 cout<<"FALSE"<<endl;
+                cout<<endl;
             }
         }
     }
