@@ -6,7 +6,7 @@ int root_id=-1, maxCap=0 ,d=0,node_size=0,num_nodes=0,max_num_nodes=0;
 Node fetch(int id,FileHandler& fh){
 
     int pagenum = floor(id/max_num_nodes);
-    int offset = id%max_num_nodes;
+    int offset = (id%max_num_nodes)*node_size;
 
     PageHandler ph = fh.PageAt(pagenum);
 
@@ -48,10 +48,12 @@ Node fetch(int id,FileHandler& fh){
 void save(Node node,FileHandler& fh){
 
     int pagenum = floor(node.id/max_num_nodes);
-    int offset = node.id%max_num_nodes;
+    int offset = (node.id%max_num_nodes)*node_size;
     
     int n = fh.LastPage().GetPageNum();
+    
     PageHandler ph;
+    
     if(pagenum == (n+1)){
         ph = fh.NewPage();
     }
@@ -59,18 +61,22 @@ void save(Node node,FileHandler& fh){
         ph = fh.PageAt(pagenum);
     }
     else{
-        cout<<"page error in save"<<endl;
+        // cout<<"page error in save"<<endl;
     }
+
     char *data = ph.GetData ();
 
     memcpy (&data[offset],&node.id, sizeof(int));
+
     memcpy (&data[offset+4], &node.parent_id, sizeof(int));
 
     int temp=8+offset;
     for(int i=0;i<d;i++){
+        // cout<< node.id<<" "<<i <<" minmbrs "<< node.minmbr[i]<<endl;
         memcpy ( &data[temp], &node.minmbr[i], sizeof(int));
         temp=temp+4;
     }
+    
     for(int i=0;i<d;i++){
         memcpy (&data[temp],  &node.maxmbr[i], sizeof(int));
         temp=temp+4;
@@ -79,9 +85,9 @@ void save(Node node,FileHandler& fh){
         memcpy ( &data[temp],  &node.children[i].id, sizeof(int));
         temp=temp+4;
     }
-
     for(int i=0;i<maxCap;i++){
         for(int j=0;j<d;j++){
+
             memcpy (&data[temp],  &node.children[i].minmbr[j],  sizeof(int));
             temp=temp+4;
         }
@@ -98,6 +104,7 @@ void save(Node node,FileHandler& fh){
 
 long double calculateVolume(const vector<int> &minmbr, const vector<int>& maxmbr){
     long double vol =1;
+    // cout<< " min and max "<<minmbr.size()<<" "<<maxmbr.size()<<endl;
     for (int i = 0; i < minmbr.size(); i++)
     {
         int lb = minmbr[i];
@@ -112,6 +119,7 @@ long double calculateVolume(const vector<int> &minmbr, const vector<int>& maxmbr
 
 
 void updateParentOnDisk(int nodeID, int new_parentID, FileHandler& fh ){
+    // cout<<"p_n "<< nodeID<< " new_p "<< new_parentID<<endl;
     if(nodeID=-1){
         return;
     }  
@@ -126,16 +134,17 @@ void generateMinimum(const vector<int>& v1,const vector<int>& v2, vector<int>& r
         result.push_back(min(v1[i], v2[i]));
     }
 }
-void generateMaximum(const vector<int>& v1, const vector<int>& v2, vector<int> result){
+void generateMaximum(const vector<int>& v1, const vector<int>& v2, vector<int>& result){
     result.clear();
     for(int i=0; i<v1.size(); i++){
-        result[i] = max(v1[i], v2[i]);
+        result.push_back(max(v1[i], v2[i]));
     }
 }
 
 void simpleBubbleUpToTheRoot(Node currNode, FileHandler& fh){
+    cout<<"id :"<<currNode.id<<endl;
     if(currNode.parent_id==-1){
-
+        cout<<"id1 :"<<currNode.id<<endl;
         //no parent so no need to do anything
         return;
     }
@@ -219,6 +228,7 @@ void addChild(Node& currNode, int childID,const vector<int> &child_minmbr,const 
 
     }
     else if(valid_children_count==maxCap){
+
         //splitting happens here
         Node L1 (currNode.id, currNode.parent_id); //L1 is basically updated currentNode
         Node L2 (num_nodes, currNode.parent_id); //L2 is the new created split node
@@ -226,17 +236,17 @@ void addChild(Node& currNode, int childID,const vector<int> &child_minmbr,const 
         vector<Entry> E_set = currNode.children;
         E_set.push_back(newChild_entry);
         //E_set vector is overflowing because of maxCap breach
-
         //PICKSEED algo.
         //In the E_set select those two entries which are farthest in distance 
         //lets calculate euclidean distance using center points in each dimension
+        // cout<< " e_s "<< E_set.size()<<" ch "<< currNode.children.size() <<endl;
         long double maxDistance = -1;
         Entry e1;
         Entry e2;
         for(int i=0; i< E_set.size(); i++){
             for(int j=i+1; j<E_set.size(); j++){
-                Entry child1 = currNode.children[i];
-                Entry child2 = currNode.children[j];
+                Entry child1 = E_set[i];
+                Entry child2 = E_set[j];
 
                 if(child2.minmbr[0]==INT_MAX && child2.maxmbr[0]==INT_MIN){
                     continue; //invalid child found so skip
@@ -261,6 +271,7 @@ void addChild(Node& currNode, int childID,const vector<int> &child_minmbr,const 
                 }
             }
         }
+        // cout<< "came"<<endl;
 
         //now e1 gets added to L1 and e2 gets added to L2
 
@@ -277,18 +288,14 @@ void addChild(Node& currNode, int childID,const vector<int> &child_minmbr,const 
         //go over to entries of the E_set and assign them to the group1/L1 or group2/L2
         //on the basis of which group causes least increase in volume
        
-
         for(Entry child: E_set){
-            
             if(entry_eq(child,e1) || entry_eq(child,e2)){
                 continue; //already added these two
             }
-
             long double childVol = calculateVolume(child.minmbr, child.maxmbr);
             vector<int> r1,r2;
             generateMinimum(child.minmbr, L1.minmbr,r1);
             generateMaximum(child.maxmbr, L1.maxmbr,r2);
-
             long double newVol1 = calculateVolume( r1,r2 );
 
             generateMinimum(child.minmbr, L2.minmbr,r1);
@@ -297,7 +304,6 @@ void addChild(Node& currNode, int childID,const vector<int> &child_minmbr,const 
 
             long double increase1 = abs(newVol1-childVol);
             long double increase2 = abs(newVol2-childVol);
-
             if(increase1<increase2){
                 group1.push_back(child);
                 incorporate_child_mbr(L1,child);
@@ -331,14 +337,20 @@ void addChild(Node& currNode, int childID,const vector<int> &child_minmbr,const 
                 }
             }
         }
-
     //     //update the children of L1 and L2
-        L1.children = group1;
-        L2.children = group2;
+    for(int i=0;i<group1.size();i++){
+        L1.children[i] = group1[i];
+    }
+    for(int i=0;i<group2.size();i++){
+        L2.children[i] = group2[i];
+    }
+    // L1.children = group1;
+    // L2.children = group2;
 
     //     //save nodes L1 and L2 to page
         save(L1,fh);
         save(L2,fh);
+
 
     //     //for entries in group1 and group2 and update their parents
         for(Entry e : group1){
@@ -373,10 +385,11 @@ void addChild(Node& currNode, int childID,const vector<int> &child_minmbr,const 
             //add the two children to newRoot
             newRoot.children[0] = ent1;
             newRoot.children[1] = ent2;
-            updateParentOnDisk(ent1.id, newRoot.id,fh);
-            updateParentOnDisk(ent2.id, newRoot.id,fh);
             root_id = newRoot.id;
             save(newRoot,fh);
+            updateParentOnDisk(ent1.id, newRoot.id,fh);
+            updateParentOnDisk(ent2.id, newRoot.id,fh);
+            
         }
         else{
             Node parentNode = fetch(parent_id,fh);
@@ -392,7 +405,7 @@ void addChild(Node& currNode, int childID,const vector<int> &child_minmbr,const 
 
 }
 void insert_and_update(Node& currNode,const vector<int>& P, FileHandler& fh){
-    
+    // cout<<"entered "<<endl;
     if(currNode.children[0].id==-1){
         for(int i=0;i<d;i++){
             currNode.minmbr[i] = min(currNode.minmbr[i],P[i]);
@@ -401,7 +414,6 @@ void insert_and_update(Node& currNode,const vector<int>& P, FileHandler& fh){
         addChild(currNode,-1,P,P,fh);
     }
     else{
-
         Entry min_MBR_child;
         long double volumeIncrease = LDBL_MAX; //long double because volume will be very large
         long double tiebreaker1Vol = LDBL_MAX; //long double because volume will be very large
@@ -443,7 +455,7 @@ void insert_and_update(Node& currNode,const vector<int>& P, FileHandler& fh){
                         }
                     }
                     if(index1==-1 && index2==-1){
-                        cout<<"error in finding index L446"<<endl;
+                        // cout<<"error in finding index L446"<<endl;
                     }
                     //tie breaker 2, i.e volumeIncrease is same , child volumes are also same, choose the one coming before in the children list
                     // int index1 = find(currNode.children.begin(),currNode.children.begin(),min_MBR_child) - currNode.children.begin();
@@ -455,11 +467,11 @@ void insert_and_update(Node& currNode,const vector<int>& P, FileHandler& fh){
                 }
             }
         }
-
         //use the id of this child to traverse down the tree
         int child_id = min_MBR_child.id;
         Node nextNode = fetch(child_id,fh); //fetchNodeFromDisk is some fetch function which you have implemented
         insert_and_update(nextNode,P,fh); 
+
         // Entry min_MBR_child;
 
     }
@@ -515,6 +527,7 @@ void RTree::insert(const vector<int>& p, FileHandler& fh){
 
     }
     else{
+
         Node rootNode = fetch(root_id,fh);
         insert_and_update(rootNode, p,fh);
     }
@@ -593,6 +606,7 @@ bool search(int nodeID, const vector<int>& P, FileHandler& fh){
 }
 
 bool RTree::query(const vector<int>& P, FileHandler& fh){
+    cout<< max_num_nodes<<endl;
 	//fetch the node node from disk using nodeID
     return search(root_id,P,fh);
 }
