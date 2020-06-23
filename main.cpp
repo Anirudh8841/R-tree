@@ -109,6 +109,8 @@ int main(int argc, char const *argv[])
             }
         }
     }
+    fm.CloseFile (fh);
+    fm.DestroyFile("temp.txt");
 
     return 0;
 }
