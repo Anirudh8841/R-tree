@@ -4,6 +4,7 @@
 #include <fstream>
 #include "rtree.h"
 
+
 using namespace std;
 
 
@@ -69,6 +70,7 @@ int main(int argc, char const *argv[])
                 p.push_back(px);
             }
             tree.insert(p,fh);
+            cout<<"inserted"<<endl;
 
             // FileManager fm;
             // tree.insert(p, fm, fh);
@@ -99,6 +101,12 @@ int main(int argc, char const *argv[])
                 p.push_back(px);
             }
             bool que = tree.query(p,fh);
+            if(que){
+                cout << "present"<< endl;
+            }
+            else{
+                cout<<" not present"<<endl;
+            }
         }
     }
 

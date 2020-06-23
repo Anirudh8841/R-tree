@@ -9,10 +9,12 @@ Node fetch(int id,FileHandler& fh){
     int offset = id%max_num_nodes;
 
     PageHandler ph = fh.PageAt(pagenum);
+
     char *data = ph.GetData ();
     Node node(0,-1);
 
     root_id=0;
+
     memcpy (&node.id,&data[offset], sizeof(int));
     memcpy (&node.parent_id,&data[offset+4], sizeof(int));
 
@@ -48,17 +50,19 @@ void save(Node node,FileHandler& fh){
     int pagenum = floor(node.id/max_num_nodes);
     int offset = node.id%max_num_nodes;
     
-    if(){
-
+    int n = fh.LastPage().GetPageNum();
+    PageHandler ph;
+    if(pagenum == (n+1)){
+        ph = fh.NewPage();
+    }
+    else if(pagenum <= n){
+        ph = fh.PageAt(pagenum);
     }
     else{
-
+        cout<<"page error in save"<<endl;
     }
-    PageHandler ph = fh.PageAt(pagenum);
     char *data = ph.GetData ();
-    // Node node(0,-1);
 
-    // root_id=0;
     memcpy (&data[offset],&node.id, sizeof(int));
     memcpy (&data[offset+4], &node.parent_id, sizeof(int));
 
@@ -131,6 +135,7 @@ void generateMaximum(const vector<int>& v1, const vector<int>& v2, vector<int> r
 
 void simpleBubbleUpToTheRoot(Node currNode, FileHandler& fh){
     if(currNode.parent_id==-1){
+
         //no parent so no need to do anything
         return;
     }
@@ -370,7 +375,7 @@ void addChild(Node& currNode, int childID,const vector<int> &child_minmbr,const 
             newRoot.children[1] = ent2;
             updateParentOnDisk(ent1.id, newRoot.id,fh);
             updateParentOnDisk(ent2.id, newRoot.id,fh);
-
+            root_id = newRoot.id;
             save(newRoot,fh);
         }
         else{
@@ -424,12 +429,29 @@ void insert_and_update(Node& currNode,const vector<int>& P, FileHandler& fh){
                     tiebreaker1Vol = oldVol;
                 }
                 else if (oldVol==tiebreaker1Vol){
+                    int index1=-1,index2=-1;
+                    for(int i=0;i<currNode.children.size();i++){
+                        if(entry_eq(currNode.children[i],min_MBR_child)){
+                            index1=i;
+                            break;
+                        }
+                    }
+                    for(int i=0;i<currNode.children.size();i++){
+                        if(entry_eq(currNode.children[i],child)){
+                            index2=i;
+                            break;
+                        }
+                    }
+                    if(index1==-1 && index2==-1){
+                        cout<<"error in finding index L446"<<endl;
+                    }
                     //tie breaker 2, i.e volumeIncrease is same , child volumes are also same, choose the one coming before in the children list
-                    int index1 = find(currNode.children.begin(),currNode.children.begin(),min_MBR_child) - currNode.children.begin();
-                    int index2 = find(currNode.children.begin(),currNode.children.begin(),child) - currNode.children.begin();
+                    // int index1 = find(currNode.children.begin(),currNode.children.begin(),min_MBR_child) - currNode.children.begin();
+                    // int index2 = find(currNode.children.begin(),currNode.children.begin(),child) - currNode.children.begin();
                     if(index2<index1){
                         min_MBR_child = child;
                     }
+                    
                 }
             }
         }
