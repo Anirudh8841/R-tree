@@ -47,7 +47,13 @@ void save(Node node,FileHandler& fh){
 
     int pagenum = floor(node.id/max_num_nodes);
     int offset = node.id%max_num_nodes;
+    
+    if(){
 
+    }
+    else{
+
+    }
     PageHandler ph = fh.PageAt(pagenum);
     char *data = ph.GetData ();
     // Node node(0,-1);
@@ -80,6 +86,9 @@ void save(Node node,FileHandler& fh){
             temp=temp+4;
         }   
     }
+    fh.MarkDirty(pagenum);
+	fh.UnpinPage(pagenum);
+	fh.FlushPage(pagenum);
     return ;    
 }
 
@@ -387,6 +396,48 @@ void insert_and_update(Node& currNode,const vector<int>& P, FileHandler& fh){
         addChild(currNode,-1,P,P,fh);
     }
     else{
+
+        Entry min_MBR_child;
+        long double volumeIncrease = LDBL_MAX; //long double because volume will be very large
+        long double tiebreaker1Vol = LDBL_MAX; //long double because volume will be very large
+
+        for(Entry child : currNode.children){
+            //if we choose this child then how much volume do we have to increase
+            //basically the difference of change in MBR's volume
+            
+            //get the old volume and new volume and calculate diff of this child using its mbr
+            long double oldVol = calculateVolume(child.minmbr, child.maxmbr);
+            vector<int> r1,r2;
+            generateMinimum(child.minmbr, P,r1);
+            generateMaximum(child.maxmbr, P,r2);
+            long double newVol = calculateVolume( r1, r2);
+            long double diff = newVol-oldVol;
+
+            if(diff<volumeIncrease){
+                min_MBR_child = child;
+                volumeIncrease = diff;
+            }
+            else if(diff==volumeIncrease){
+                //tie breaker 1, i.e. volumeIncrease is same so we need will choose that child which has lower volume
+                if(oldVol<tiebreaker1Vol){
+                    min_MBR_child = child;
+                    tiebreaker1Vol = oldVol;
+                }
+                else if (oldVol==tiebreaker1Vol){
+                    //tie breaker 2, i.e volumeIncrease is same , child volumes are also same, choose the one coming before in the children list
+                    int index1 = find(currNode.children.begin(),currNode.children.begin(),min_MBR_child) - currNode.children.begin();
+                    int index2 = find(currNode.children.begin(),currNode.children.begin(),child) - currNode.children.begin();
+                    if(index2<index1){
+                        min_MBR_child = child;
+                    }
+                }
+            }
+        }
+
+        //use the id of this child to traverse down the tree
+        int child_id = min_MBR_child.id;
+        Node nextNode = fetch(child_id,fh); //fetchNodeFromDisk is some fetch function which you have implemented
+        insert_and_update(nextNode,P,fh); 
         // Entry min_MBR_child;
 
     }
@@ -394,7 +445,7 @@ void insert_and_update(Node& currNode,const vector<int>& P, FileHandler& fh){
 
 
 
-void RTree::insert(const vector<int>& p, FileHandler& fh, FileManager& fm){
+void RTree::insert(const vector<int>& p, FileHandler& fh){
     //root node
     if(num_nodes==0){
 
@@ -402,6 +453,7 @@ void RTree::insert(const vector<int>& p, FileHandler& fh, FileManager& fm){
         char *data = ph.GetData ();
         Node num(0,-1);
 
+        root_id=0;
         memcpy (&data[0], &num.id, sizeof(int));
         memcpy (&data[4], &num.parent_id, sizeof(int));
 
@@ -443,31 +495,82 @@ void RTree::insert(const vector<int>& p, FileHandler& fh, FileManager& fm){
     else{
         Node rootNode = fetch(root_id,fh);
         insert_and_update(rootNode, p,fh);
-
-        
     }
-    
 }
-// void RTree::insert(vector<int> p,FileManager fm,FileHandler fh){
-    //root node
-    // if(num_nodes==0){
-        // Create a new page
-        // PageHandler ph = fh.NewPage ();
-        // char *data = ph.GetData ();
 
-        // int num = 5;
-	    // memcpy (&data[0], &num, sizeof(int));
 
-        // fh.FlushPages ();
-	    // cout << "Data written and flushed" << endl;
+bool search(int nodeID, const vector<int>& P, FileHandler& fh){
+	//fetch the node node from disk using nodeID
+    Node currNode = fetch(nodeID,fh);
 
-        // fm.CloseFile(fh);
+	if(currNode.children[0].id==-1){
+		//means the currNode is a leaf and its children are all points
 
-       
-    // }
-    // else{
+		//go over these children points and check whether our search point is among one of them or not
+		for(Entry child : currNode.children){
+			if(child.minmbr[0]==INT_MAX && child.maxmbr[0]==INT_MIN){
+				//means this is just a place filler child
+				//and the upcoming ones will also be place fillers
+				return false;
+			}
+			else{
+				//point is valid
+				//check whether this point is equal to P
+				bool equals = true;
+				for(int i=0;i<d;i++){
+					if(child.minmbr[i]!=P[i] || child.maxmbr[i]!=P[i]){
+						equals = false;
+						break;
+					}
+				}
 
-    // }
-    // num_nodes++;
-//     return;
-// }
+				if(equals){
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	else{
+		//means currNode is not a leaf so we have to check children of this currNode
+
+		for(Entry child : currNode.children){
+
+			//check whether child is valid or just a place filler
+			if(child.minmbr[0]==INT_MAX && child.maxmbr[0]==INT_MIN){
+				//means this is just a place filler child
+				//and the upcoming ones will also be place fillers
+				break;
+			}
+			else{
+				//if child is valid check if P lies inside this child's MBR in each dimension
+				//if it does then we recurse on that child
+				bool liesInside = true;
+				for(int i=0;i<d;i++){
+					if(P[i] < child.minmbr[i] || P[i] > child.maxmbr[i]){
+						liesInside = false;
+						break;
+					}
+				}
+
+				if(liesInside){
+					//P lies inside so recurse on this child
+					if( search(child.id, P,fh) ){
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+
+}
+
+bool RTree::query(const vector<int>& P, FileHandler& fh){
+	//fetch the node node from disk using nodeID
+    return search(root_id,P,fh);
+}

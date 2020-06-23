@@ -68,7 +68,7 @@ int main(int argc, char const *argv[])
             while (iss >> px) {
                 p.push_back(px);
             }
-            tree.insert(p,fh,fm);
+            tree.insert(p,fh);
 
             // FileManager fm;
             // tree.insert(p, fm, fh);
@@ -93,7 +93,12 @@ int main(int argc, char const *argv[])
 	        // fm.DestroyFile ("temp.txt");
 
         } else if (op == "QUERY") {
-            continue;
+            vector<int> p;
+            int px;
+            while (iss >> px) {
+                p.push_back(px);
+            }
+            bool que = tree.query(p,fh);
         }
     }
 
