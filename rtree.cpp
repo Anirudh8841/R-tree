@@ -72,7 +72,7 @@ void save(Node node,FileHandler& fh){
 
     int temp=8+offset;
     for(int i=0;i<d;i++){
-        // cout<< node.id<<" "<<i <<" minmbrs "<< node.minmbr[i]<<endl;
+        cout<< node.id<<" "<<i <<" minmbrs "<< node.minmbr[i]<<endl;
         memcpy ( &data[temp], &node.minmbr[i], sizeof(int));
         temp=temp+4;
     }
@@ -142,9 +142,9 @@ void generateMaximum(const vector<int>& v1, const vector<int>& v2, vector<int>& 
 }
 
 void simpleBubbleUpToTheRoot(Node currNode, FileHandler& fh){
-    cout<<"id :"<<currNode.id<<endl;
+    // cout<<"id :"<<currNode.id<<endl;
     if(currNode.parent_id==-1){
-        cout<<"id1 :"<<currNode.id<<endl;
+        // cout<<"id1 :"<<currNode.id<<endl;
         //no parent so no need to do anything
         return;
     }
@@ -385,10 +385,11 @@ void addChild(Node& currNode, int childID,const vector<int> &child_minmbr,const 
             //add the two children to newRoot
             newRoot.children[0] = ent1;
             newRoot.children[1] = ent2;
-            root_id = newRoot.id;
-            save(newRoot,fh);
+            
             updateParentOnDisk(ent1.id, newRoot.id,fh);
             updateParentOnDisk(ent2.id, newRoot.id,fh);
+            root_id = newRoot.id;
+            save(newRoot,fh);
             
         }
         else{
@@ -606,7 +607,7 @@ bool search(int nodeID, const vector<int>& P, FileHandler& fh){
 }
 
 bool RTree::query(const vector<int>& P, FileHandler& fh){
-    cout<< max_num_nodes<<endl;
+    // cout<< max_num_nodes<<endl;
 	//fetch the node node from disk using nodeID
     return search(root_id,P,fh);
 }
