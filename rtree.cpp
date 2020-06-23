@@ -98,7 +98,7 @@ long double calculateVolume(const vector<int> &minmbr, const vector<int>& maxmbr
     {
         int lb = minmbr[i];
         int ub = maxmbr[i];
-        if(lb==INT_MIN){
+        if(lb==INT_MAX){
             break;
         }
         vol = vol*(ub-lb);
@@ -335,7 +335,7 @@ void addChild(Node& currNode, int childID,const vector<int> &child_minmbr,const 
         save(L1,fh);
         save(L2,fh);
 
-    //     //for entries in group1 abd group2 and update their parents
+    //     //for entries in group1 and group2 and update their parents
         for(Entry e : group1){
             updateParentOnDisk(e.id,L1.id,fh); //updates parent id of node having id = e.id 
         }
