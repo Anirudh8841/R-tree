@@ -65,6 +65,7 @@ int main(int argc, char const *argv[])
 	// fm.PrintBuffer();
     while (getline(infile, line))
     {
+        count++;
         istringstream iss(line);
         string op;
         iss >> op;
@@ -85,15 +86,17 @@ int main(int argc, char const *argv[])
             
 
             fm.CloseFile(f);
+
+            tree.print_t(tree.ret_root_id(),fh);
             // fm.ClearBuffer();
             // fm.PrintBuffer();
             // f.CloseFile(infile.c_str());
             
 
         } else if (op == "INSERT") {
-            count++;
-            cout<<"INSERT"<<endl;
-            cout<<endl;
+            // count++;
+            // cout<<"INSERT"<<endl;
+            // cout<<endl;
             vector<int> p;
             int px;
             while (iss >> px) {
@@ -101,6 +104,12 @@ int main(int argc, char const *argv[])
             }
 
             tree.insert(p,fh);
+            if(count==100){
+                // cout<<"in c100"<<endl;
+                tree.print_t(tree.ret_root_id(),fh);
+            }
+           
+            // tree.print_t()
             // fm.PrintBuffer();
             
             // cout<<"inserted "<< fh.LastPage().GetPageNum()<<endl;
@@ -133,14 +142,18 @@ int main(int argc, char const *argv[])
             while (iss >> px) {
                 p.push_back(px);
             }
+            // if(p[0]==1940312525){
+            //     cout<<" 708  sap "<<p[0]<<endl;
+            //     // tree.print_t(tree.ret_root_id(),fh);
+            // }
             bool que = tree.query(p,fh);
             if(que){
                 cout << "TRUE"<< endl;
-                cout<<endl;
+                // cout<<endl;
             }
             else{
                 cout<<"FALSE"<<endl;
-                cout<<endl;
+                // cout<<endl;
             }
         }
     }

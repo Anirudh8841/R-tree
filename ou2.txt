@@ -1,0 +1,2722 @@
+rm -f *.o
+rm -f temp.txt
+# rm -f sample_run
+rm -f rtree
+g++ -std=c++11 -c buffer_manager.cpp
+g++ -std=c++11 -c file_manager.cpp
+g++ -std=c++11 -c -g rtree.cpp
+g++ -std=c++11 -c -g main.cpp
+g++ -std=c++11 -o rtree buffer_manager.o file_manager.o rtree.o main.o
+BULKLOAD
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+INSERT
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+INSERT
+
+INSERT
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+INSERT
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+INSERT
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+INSERT
+
+TRUE
+
+INSERT
+
+TRUE
+
+FALSE
+
+INSERT
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+INSERT
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+INSERT
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+INSERT
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+INSERT
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+INSERT
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+INSERT
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+INSERT
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+INSERT
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+INSERT
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+INSERT
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+INSERT
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+INSERT
+
+TRUE
+
+TRUE
+
+INSERT
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+INSERT
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+INSERT
+
+FALSE
+
+TRUE
+
+INSERT
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+INSERT
+
+INSERT
+
+TRUE
+
+FALSE
+
+INSERT
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+INSERT
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+INSERT
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+INSERT
+
+FALSE
+
+TRUE
+
+INSERT
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+INSERT
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+INSERT
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+INSERT
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+INSERT
+
+TRUE
+
+TRUE
+
+node_id: 13 node_parent_id: -1
+minmbrs: (8075280,2791691,) , maxmbrs: (2145475865,2142183592,)
+0 child id = 10 , minmbr: (962428942,979038753,) , maxmbrs: (1681009015,2096749553,)
+1 child id = 12 , minmbr: (20018680,17565472,) , maxmbrs: (2129149659,814866146,)
+2 child id = 22 , minmbr: (37441186,1179517227,) , maxmbrs: (796039849,2105013019,)
+3 child id = 28 , minmbr: (23945404,2791691,) , maxmbrs: (1506653618,1153106575,)
+4 child id = 37 , minmbr: (1034563350,1326152367,) , maxmbrs: (2145475865,2142183592,)
+node_ended
+node_id: 10 node_parent_id: 13
+minmbrs: (962428942,943590286,) , maxmbrs: (1681009015,2096749553,)
+0 child id = 5 , minmbr: (996532666,979038753,) , maxmbrs: (1162103222,1258102117,)
+1 child id = 6 , minmbr: (1304822190,1369895901,) , maxmbrs: (1474133721,1673157166,)
+2 child id = 16 , minmbr: (1154871310,1375897291,) , maxmbrs: (1348018828,1779933097,)
+3 child id = 24 , minmbr: (1190213214,1086801532,) , maxmbrs: (1641876843,1245134883,)
+4 child id = 34 , minmbr: (962428942,1929450309,) , maxmbrs: (1502684391,2096749553,)
+5 child id = 36 , minmbr: (1485911761,1473959475,) , maxmbrs: (1681009015,1740921149,)
+node_ended
+node_id: 5 node_parent_id: 10
+minmbrs: (996532666,979038753,) , maxmbrs: (1162103222,1286121406,)
+0 child id = -1 , minmbr: (1023583462,979038753,) , maxmbrs: (1023583462,979038753,)
+1 child id = -1 , minmbr: (1054014592,1217225495,) , maxmbrs: (1054014592,1217225495,)
+2 child id = -1 , minmbr: (1162103222,1218242911,) , maxmbrs: (1162103222,1218242911,)
+3 child id = -1 , minmbr: (1155898266,1243415982,) , maxmbrs: (1155898266,1243415982,)
+4 child id = -1 , minmbr: (996532666,1258102117,) , maxmbrs: (996532666,1258102117,)
+5 child id = -1 , minmbr: (1113013156,1286121406,) , maxmbrs: (1113013156,1286121406,)
+node_ended
+node_id: 6 node_parent_id: 10
+minmbrs: (1304822190,1369895901,) , maxmbrs: (1474133721,1673157166,)
+0 child id = -1 , minmbr: (1304822190,1369895901,) , maxmbrs: (1304822190,1369895901,)
+1 child id = -1 , minmbr: (1474133721,1673157166,) , maxmbrs: (1474133721,1673157166,)
+node_ended
+node_id: 16 node_parent_id: 10
+minmbrs: (933306170,1307305507,) , maxmbrs: (1348018828,1779933097,)
+0 child id = -1 , minmbr: (1164397649,1779933097,) , maxmbrs: (1164397649,1779933097,)
+1 child id = -1 , minmbr: (1268326865,1375897291,) , maxmbrs: (1268326865,1375897291,)
+2 child id = -1 , minmbr: (1180954783,1501466174,) , maxmbrs: (1180954783,1501466174,)
+3 child id = -1 , minmbr: (1348018828,1628783326,) , maxmbrs: (1348018828,1628783326,)
+4 child id = -1 , minmbr: (1245792994,1650564183,) , maxmbrs: (1245792994,1650564183,)
+5 child id = -1 , minmbr: (1154871310,1714111936,) , maxmbrs: (1154871310,1714111936,)
+6 child id = -1 , minmbr: (1303751379,1307305507,) , maxmbrs: (1303751379,1307305507,)
+7 child id = -1 , minmbr: (933306170,1601924201,) , maxmbrs: (933306170,1601924201,)
+8 child id = -1 , minmbr: (1108032984,1620081694,) , maxmbrs: (1108032984,1620081694,)
+9 child id = -1 , minmbr: (938058214,1678742682,) , maxmbrs: (938058214,1678742682,)
+node_ended
+node_id: 24 node_parent_id: 10
+minmbrs: (1190213214,943590286,) , maxmbrs: (1641974888,1276132267,)
+0 child id = -1 , minmbr: (1190213214,1086801532,) , maxmbrs: (1190213214,1086801532,)
+1 child id = -1 , minmbr: (1614330966,1190064425,) , maxmbrs: (1614330966,1190064425,)
+2 child id = -1 , minmbr: (1563354364,1195694890,) , maxmbrs: (1563354364,1195694890,)
+3 child id = -1 , minmbr: (1289420864,1217232119,) , maxmbrs: (1289420864,1217232119,)
+4 child id = -1 , minmbr: (1641876843,1245134883,) , maxmbrs: (1641876843,1245134883,)
+5 child id = -1 , minmbr: (1432131598,1201747502,) , maxmbrs: (1432131598,1201747502,)
+6 child id = -1 , minmbr: (1637789758,1218394666,) , maxmbrs: (1637789758,1218394666,)
+7 child id = -1 , minmbr: (1526019204,1271806325,) , maxmbrs: (1526019204,1271806325,)
+8 child id = -1 , minmbr: (1641974888,943590286,) , maxmbrs: (1641974888,943590286,)
+9 child id = -1 , minmbr: (1437031578,1276132267,) , maxmbrs: (1437031578,1276132267,)
+node_ended
+node_id: 34 node_parent_id: 10
+minmbrs: (962428942,1929450309,) , maxmbrs: (1502684391,2096749553,)
+0 child id = -1 , minmbr: (1104863662,2031057060,) , maxmbrs: (1104863662,2031057060,)
+1 child id = -1 , minmbr: (1136687428,1933349297,) , maxmbrs: (1136687428,1933349297,)
+2 child id = -1 , minmbr: (990112159,2096749553,) , maxmbrs: (990112159,2096749553,)
+3 child id = -1 , minmbr: (962428942,1929450309,) , maxmbrs: (962428942,1929450309,)
+4 child id = -1 , minmbr: (1280617046,1963515915,) , maxmbrs: (1280617046,1963515915,)
+5 child id = -1 , minmbr: (1502684391,1983411860,) , maxmbrs: (1502684391,1983411860,)
+6 child id = -1 , minmbr: (1213359671,2077858503,) , maxmbrs: (1213359671,2077858503,)
+node_ended
+node_id: 36 node_parent_id: 10
+minmbrs: (1485911761,1473959475,) , maxmbrs: (1681009015,1740921149,)
+0 child id = -1 , minmbr: (1599437680,1740921149,) , maxmbrs: (1599437680,1740921149,)
+1 child id = -1 , minmbr: (1681009015,1473959475,) , maxmbrs: (1681009015,1473959475,)
+2 child id = -1 , minmbr: (1579587908,1514408148,) , maxmbrs: (1579587908,1514408148,)
+3 child id = -1 , minmbr: (1654697271,1521867564,) , maxmbrs: (1654697271,1521867564,)
+4 child id = -1 , minmbr: (1535145211,1677546284,) , maxmbrs: (1535145211,1677546284,)
+5 child id = -1 , minmbr: (1533827849,1574877998,) , maxmbrs: (1533827849,1574877998,)
+6 child id = -1 , minmbr: (1505140448,1544438244,) , maxmbrs: (1505140448,1544438244,)
+7 child id = -1 , minmbr: (1485911761,1545068656,) , maxmbrs: (1485911761,1545068656,)
+8 child id = -1 , minmbr: (1628555968,1616406441,) , maxmbrs: (1628555968,1616406441,)
+node_ended
+node_id: 12 node_parent_id: 13
+minmbrs: (8075280,17565472,) , maxmbrs: (2129149659,848731773,)
+0 child id = 19 , minmbr: (973277757,581964618,) , maxmbrs: (1381838434,804238892,)
+1 child id = 0 , minmbr: (20018680,78262439,) , maxmbrs: (621750264,235724272,)
+2 child id = 4 , minmbr: (908477296,37620980,) , maxmbrs: (1477664877,594207483,)
+3 child id = 8 , minmbr: (1782084751,17565472,) , maxmbrs: (2069835319,218151495,)
+4 child id = 14 , minmbr: (1729682413,489956044,) , maxmbrs: (2110377009,814866146,)
+5 child id = 17 , minmbr: (1150759051,406509567,) , maxmbrs: (1659172621,525740514,)
+6 child id = 38 , minmbr: (1980655433,213275477,) , maxmbrs: (2129149659,648732784,)
+node_ended
+node_id: 19 node_parent_id: 12
+minmbrs: (973277757,581964618,) , maxmbrs: (1381838434,804238892,)
+0 child id = -1 , minmbr: (1027742903,804238892,) , maxmbrs: (1027742903,804238892,)
+1 child id = -1 , minmbr: (1304882413,581964618,) , maxmbrs: (1304882413,581964618,)
+2 child id = -1 , minmbr: (1381838434,803900192,) , maxmbrs: (1381838434,803900192,)
+3 child id = -1 , minmbr: (973277757,731159142,) , maxmbrs: (973277757,731159142,)
+node_ended
+node_id: 0 node_parent_id: 12
+minmbrs: (8075280,78262439,) , maxmbrs: (621750264,578116223,)
+0 child id = -1 , minmbr: (20018680,209692007,) , maxmbrs: (20018680,209692007,)
+1 child id = -1 , minmbr: (196169247,78262439,) , maxmbrs: (196169247,78262439,)
+2 child id = -1 , minmbr: (621750264,93725974,) , maxmbrs: (621750264,93725974,)
+3 child id = -1 , minmbr: (487304214,97521018,) , maxmbrs: (487304214,97521018,)
+4 child id = -1 , minmbr: (128707068,152323938,) , maxmbrs: (128707068,152323938,)
+5 child id = -1 , minmbr: (265421727,229542041,) , maxmbrs: (265421727,229542041,)
+6 child id = -1 , minmbr: (469758395,235724272,) , maxmbrs: (469758395,235724272,)
+7 child id = -1 , minmbr: (8075280,578116223,) , maxmbrs: (8075280,578116223,)
+node_ended
+node_id: 4 node_parent_id: 12
+minmbrs: (908477296,37620980,) , maxmbrs: (1477664877,594207483,)
+0 child id = -1 , minmbr: (908477296,37620980,) , maxmbrs: (908477296,37620980,)
+1 child id = -1 , minmbr: (1477664877,89451732,) , maxmbrs: (1477664877,89451732,)
+2 child id = -1 , minmbr: (960062125,594207483,) , maxmbrs: (960062125,594207483,)
+3 child id = -1 , minmbr: (1267945984,244838223,) , maxmbrs: (1267945984,244838223,)
+node_ended
+node_id: 8 node_parent_id: 12
+minmbrs: (1782084751,17565472,) , maxmbrs: (2069835319,218151495,)
+0 child id = -1 , minmbr: (1887044266,39255336,) , maxmbrs: (1887044266,39255336,)
+1 child id = -1 , minmbr: (2069835319,17565472,) , maxmbrs: (2069835319,17565472,)
+2 child id = -1 , minmbr: (1782084751,95409222,) , maxmbrs: (1782084751,95409222,)
+3 child id = -1 , minmbr: (1985822031,213139499,) , maxmbrs: (1985822031,213139499,)
+4 child id = -1 , minmbr: (1867933822,218151495,) , maxmbrs: (1867933822,218151495,)
+5 child id = -1 , minmbr: (1820195017,93398165,) , maxmbrs: (1820195017,93398165,)
+node_ended
+node_id: 14 node_parent_id: 12
+minmbrs: (1729682413,489956044,) , maxmbrs: (2110377009,848731773,)
+0 child id = -1 , minmbr: (1927785704,814866146,) , maxmbrs: (1927785704,814866146,)
+1 child id = -1 , minmbr: (1729682413,489956044,) , maxmbrs: (1729682413,489956044,)
+2 child id = -1 , minmbr: (1933845055,570084840,) , maxmbrs: (1933845055,570084840,)
+3 child id = -1 , minmbr: (2110377009,623089083,) , maxmbrs: (2110377009,623089083,)
+4 child id = -1 , minmbr: (1795485573,713166018,) , maxmbrs: (1795485573,713166018,)
+5 child id = -1 , minmbr: (2031992436,734797573,) , maxmbrs: (2031992436,734797573,)
+6 child id = -1 , minmbr: (1788480578,848731773,) , maxmbrs: (1788480578,848731773,)
+7 child id = -1 , minmbr: (2076677068,647326469,) , maxmbrs: (2076677068,647326469,)
+node_ended
+node_id: 17 node_parent_id: 12
+minmbrs: (1150759051,370414065,) , maxmbrs: (1801988352,525740514,)
+0 child id = -1 , minmbr: (1150759051,525740514,) , maxmbrs: (1150759051,525740514,)
+1 child id = -1 , minmbr: (1659172621,406509567,) , maxmbrs: (1659172621,406509567,)
+2 child id = -1 , minmbr: (1195642587,484685256,) , maxmbrs: (1195642587,484685256,)
+3 child id = -1 , minmbr: (1437664165,524726231,) , maxmbrs: (1437664165,524726231,)
+4 child id = -1 , minmbr: (1672730781,460706515,) , maxmbrs: (1672730781,460706515,)
+5 child id = -1 , minmbr: (1801988352,436387002,) , maxmbrs: (1801988352,436387002,)
+6 child id = -1 , minmbr: (1567328352,370414065,) , maxmbrs: (1567328352,370414065,)
+7 child id = -1 , minmbr: (1766658644,433824676,) , maxmbrs: (1766658644,433824676,)
+node_ended
+node_id: 38 node_parent_id: 12
+minmbrs: (1980655433,213275477,) , maxmbrs: (2129149659,648732784,)
+0 child id = -1 , minmbr: (2057345308,648732784,) , maxmbrs: (2057345308,648732784,)
+1 child id = -1 , minmbr: (2039188479,282751783,) , maxmbrs: (2039188479,282751783,)
+2 child id = -1 , minmbr: (2129149659,213275477,) , maxmbrs: (2129149659,213275477,)
+3 child id = -1 , minmbr: (1980655433,403519901,) , maxmbrs: (1980655433,403519901,)
+4 child id = -1 , minmbr: (2028619121,475519458,) , maxmbrs: (2028619121,475519458,)
+node_ended
+node_id: 22 node_parent_id: 13
+minmbrs: (15231277,1179517227,) , maxmbrs: (882943503,2105013019,)
+0 child id = 3 , minmbr: (252167354,1782704902,) , maxmbrs: (738398113,1830940756,)
+1 child id = 2 , minmbr: (107017204,1179517227,) , maxmbrs: (322276780,1462007028,)
+2 child id = 15 , minmbr: (380073132,1575279570,) , maxmbrs: (380073132,1575279570,)
+3 child id = 20 , minmbr: (308754823,1497524231,) , maxmbrs: (757212008,1692061432,)
+4 child id = 25 , minmbr: (37441186,1780339043,) , maxmbrs: (323066876,2105013019,)
+5 child id = 29 , minmbr: (356945905,1235288287,) , maxmbrs: (796039849,1400016548,)
+6 child id = 33 , minmbr: (329797264,1888407960,) , maxmbrs: (882943503,1989775877,)
+node_ended
+node_id: 3 node_parent_id: 22
+minmbrs: (252167354,1763184188,) , maxmbrs: (738398113,1830940756,)
+0 child id = -1 , minmbr: (252167354,1818353843,) , maxmbrs: (252167354,1818353843,)
+1 child id = -1 , minmbr: (738398113,1782704902,) , maxmbrs: (738398113,1782704902,)
+2 child id = -1 , minmbr: (557068225,1830940756,) , maxmbrs: (557068225,1830940756,)
+3 child id = -1 , minmbr: (491683055,1763184188,) , maxmbrs: (491683055,1763184188,)
+4 child id = -1 , minmbr: (482389105,1804407336,) , maxmbrs: (482389105,1804407336,)
+node_ended
+node_id: 2 node_parent_id: 22
+minmbrs: (92240618,1179517227,) , maxmbrs: (322276780,1503958225,)
+0 child id = -1 , minmbr: (107017204,1462007028,) , maxmbrs: (107017204,1462007028,)
+1 child id = -1 , minmbr: (132656915,1179517227,) , maxmbrs: (132656915,1179517227,)
+2 child id = -1 , minmbr: (162833446,1401558472,) , maxmbrs: (162833446,1401558472,)
+3 child id = -1 , minmbr: (196660504,1358476033,) , maxmbrs: (196660504,1358476033,)
+4 child id = -1 , minmbr: (322276780,1357712179,) , maxmbrs: (322276780,1357712179,)
+5 child id = -1 , minmbr: (120898880,1503958225,) , maxmbrs: (120898880,1503958225,)
+6 child id = -1 , minmbr: (219469541,1391961081,) , maxmbrs: (219469541,1391961081,)
+7 child id = -1 , minmbr: (92240618,1198140004,) , maxmbrs: (92240618,1198140004,)
+8 child id = -1 , minmbr: (282930022,1316354514,) , maxmbrs: (282930022,1316354514,)
+node_ended
+node_id: 15 node_parent_id: 22
+minmbrs: (15231277,1520844832,) , maxmbrs: (447325255,1833675480,)
+0 child id = -1 , minmbr: (380073132,1575279570,) , maxmbrs: (380073132,1575279570,)
+1 child id = -1 , minmbr: (15231277,1520844832,) , maxmbrs: (15231277,1520844832,)
+2 child id = -1 , minmbr: (447325255,1737681573,) , maxmbrs: (447325255,1737681573,)
+3 child id = -1 , minmbr: (381127349,1833675480,) , maxmbrs: (381127349,1833675480,)
+node_ended
+node_id: 20 node_parent_id: 22
+minmbrs: (308754823,1497524231,) , maxmbrs: (762385306,1692061432,)
+0 child id = -1 , minmbr: (720306030,1692061432,) , maxmbrs: (720306030,1692061432,)
+1 child id = -1 , minmbr: (308754823,1497524231,) , maxmbrs: (308754823,1497524231,)
+2 child id = -1 , minmbr: (671364104,1509984469,) , maxmbrs: (671364104,1509984469,)
+3 child id = -1 , minmbr: (757212008,1544094805,) , maxmbrs: (757212008,1544094805,)
+4 child id = -1 , minmbr: (428280715,1612985010,) , maxmbrs: (428280715,1612985010,)
+5 child id = -1 , minmbr: (762385306,1532950984,) , maxmbrs: (762385306,1532950984,)
+6 child id = -1 , minmbr: (697377549,1562282839,) , maxmbrs: (697377549,1562282839,)
+7 child id = -1 , minmbr: (359383538,1533652956,) , maxmbrs: (359383538,1533652956,)
+8 child id = -1 , minmbr: (646398546,1577286610,) , maxmbrs: (646398546,1577286610,)
+node_ended
+node_id: 25 node_parent_id: 22
+minmbrs: (37441186,1780339043,) , maxmbrs: (323066876,2105013019,)
+0 child id = -1 , minmbr: (40527030,2084359975,) , maxmbrs: (40527030,2084359975,)
+1 child id = -1 , minmbr: (37441186,1780339043,) , maxmbrs: (37441186,1780339043,)
+2 child id = -1 , minmbr: (323066876,2105013019,) , maxmbrs: (323066876,2105013019,)
+3 child id = -1 , minmbr: (162903209,1972162803,) , maxmbrs: (162903209,1972162803,)
+4 child id = -1 , minmbr: (221944547,1894348711,) , maxmbrs: (221944547,1894348711,)
+node_ended
+node_id: 29 node_parent_id: 22
+minmbrs: (356945905,1235288287,) , maxmbrs: (848302587,1439604035,)
+0 child id = -1 , minmbr: (796039849,1249611995,) , maxmbrs: (796039849,1249611995,)
+1 child id = -1 , minmbr: (433619473,1235288287,) , maxmbrs: (433619473,1235288287,)
+2 child id = -1 , minmbr: (479844798,1324840870,) , maxmbrs: (479844798,1324840870,)
+3 child id = -1 , minmbr: (356945905,1360566896,) , maxmbrs: (356945905,1360566896,)
+4 child id = -1 , minmbr: (407992436,1400016548,) , maxmbrs: (407992436,1400016548,)
+5 child id = -1 , minmbr: (493736788,1334427125,) , maxmbrs: (493736788,1334427125,)
+6 child id = -1 , minmbr: (384964139,1253942385,) , maxmbrs: (384964139,1253942385,)
+7 child id = -1 , minmbr: (464922873,1424650259,) , maxmbrs: (464922873,1424650259,)
+8 child id = -1 , minmbr: (848302587,1439604035,) , maxmbrs: (848302587,1439604035,)
+node_ended
+node_id: 33 node_parent_id: 22
+minmbrs: (329797264,1888407960,) , maxmbrs: (882943503,1989775877,)
+0 child id = -1 , minmbr: (882943503,1909394066,) , maxmbrs: (882943503,1909394066,)
+1 child id = -1 , minmbr: (329797264,1888407960,) , maxmbrs: (329797264,1888407960,)
+2 child id = -1 , minmbr: (771246074,1919352896,) , maxmbrs: (771246074,1919352896,)
+3 child id = -1 , minmbr: (477882712,1939690969,) , maxmbrs: (477882712,1939690969,)
+4 child id = -1 , minmbr: (516216550,1953474194,) , maxmbrs: (516216550,1953474194,)
+5 child id = -1 , minmbr: (711244430,1898433542,) , maxmbrs: (711244430,1898433542,)
+6 child id = -1 , minmbr: (599681667,1975003897,) , maxmbrs: (599681667,1975003897,)
+7 child id = -1 , minmbr: (661494741,1989775877,) , maxmbrs: (661494741,1989775877,)
+8 child id = -1 , minmbr: (747213154,1961979609,) , maxmbrs: (747213154,1961979609,)
+node_ended
+node_id: 28 node_parent_id: 13
+minmbrs: (23945404,2791691,) , maxmbrs: (1511868087,1153106575,)
+0 child id = 23 , minmbr: (529557810,2791691,) , maxmbrs: (875773967,316998817,)
+1 child id = 11 , minmbr: (577762758,647505025,) , maxmbrs: (901777195,1153106575,)
+2 child id = 1 , minmbr: (69771621,358494427,) , maxmbrs: (200572230,1050841710,)
+3 child id = 26 , minmbr: (23945404,671754075,) , maxmbrs: (527566362,1144558590,)
+4 child id = 27 , minmbr: (1076859444,189173351,) , maxmbrs: (1505106377,942908714,)
+5 child id = 30 , minmbr: (663346543,322974195,) , maxmbrs: (870140235,1039296235,)
+6 child id = 32 , minmbr: (1007616870,888243559,) , maxmbrs: (1511868087,1064390252,)
+7 child id = 35 , minmbr: (235814772,195790788,) , maxmbrs: (473653430,596205158,)
+node_ended
+node_id: 23 node_parent_id: 28
+minmbrs: (529557810,2791691,) , maxmbrs: (1440862657,342293634,)
+0 child id = -1 , minmbr: (875773967,294399446,) , maxmbrs: (875773967,294399446,)
+1 child id = -1 , minmbr: (585167411,2791691,) , maxmbrs: (585167411,2791691,)
+2 child id = -1 , minmbr: (529557810,315291027,) , maxmbrs: (529557810,315291027,)
+3 child id = -1 , minmbr: (869604441,316998817,) , maxmbrs: (869604441,316998817,)
+4 child id = -1 , minmbr: (1118871951,289311235,) , maxmbrs: (1118871951,289311235,)
+5 child id = -1 , minmbr: (1440862657,154155908,) , maxmbrs: (1440862657,154155908,)
+6 child id = -1 , minmbr: (1069684301,342293634,) , maxmbrs: (1069684301,342293634,)
+7 child id = -1 , minmbr: (554614581,303261256,) , maxmbrs: (554614581,303261256,)
+8 child id = -1 , minmbr: (616841607,190828981,) , maxmbrs: (616841607,190828981,)
+9 child id = -1 , minmbr: (854676812,149850860,) , maxmbrs: (854676812,149850860,)
+node_ended
+node_id: 11 node_parent_id: 28
+minmbrs: (577762758,647505025,) , maxmbrs: (901777195,1153106575,)
+0 child id = -1 , minmbr: (698531797,1117343976,) , maxmbrs: (698531797,1117343976,)
+1 child id = -1 , minmbr: (888792064,1153106575,) , maxmbrs: (888792064,1153106575,)
+2 child id = -1 , minmbr: (577762758,647505025,) , maxmbrs: (577762758,647505025,)
+3 child id = -1 , minmbr: (901777195,1152865017,) , maxmbrs: (901777195,1152865017,)
+4 child id = -1 , minmbr: (661608538,985781881,) , maxmbrs: (661608538,985781881,)
+5 child id = -1 , minmbr: (888228030,666794797,) , maxmbrs: (888228030,666794797,)
+node_ended
+node_id: 1 node_parent_id: 28
+minmbrs: (69771621,358494427,) , maxmbrs: (200572230,1050841710,)
+0 child id = -1 , minmbr: (143824078,1050841710,) , maxmbrs: (143824078,1050841710,)
+1 child id = -1 , minmbr: (200572230,358494427,) , maxmbrs: (200572230,358494427,)
+2 child id = -1 , minmbr: (69771621,472435187,) , maxmbrs: (69771621,472435187,)
+3 child id = -1 , minmbr: (98854939,577569730,) , maxmbrs: (98854939,577569730,)
+node_ended
+node_id: 26 node_parent_id: 28
+minmbrs: (23945404,671754075,) , maxmbrs: (554285215,1144558590,)
+0 child id = -1 , minmbr: (23945404,1144558590,) , maxmbrs: (23945404,1144558590,)
+1 child id = -1 , minmbr: (527566362,839283427,) , maxmbrs: (527566362,839283427,)
+2 child id = -1 , minmbr: (407758942,880655926,) , maxmbrs: (407758942,880655926,)
+3 child id = -1 , minmbr: (105734225,671754075,) , maxmbrs: (105734225,671754075,)
+4 child id = -1 , minmbr: (124888058,997403811,) , maxmbrs: (124888058,997403811,)
+5 child id = -1 , minmbr: (226394141,849678733,) , maxmbrs: (226394141,849678733,)
+6 child id = -1 , minmbr: (554285215,1014440143,) , maxmbrs: (554285215,1014440143,)
+7 child id = -1 , minmbr: (29824504,939249354,) , maxmbrs: (29824504,939249354,)
+8 child id = -1 , minmbr: (322563533,906895342,) , maxmbrs: (322563533,906895342,)
+node_ended
+node_id: 27 node_parent_id: 28
+minmbrs: (982159006,189173351,) , maxmbrs: (1505106377,942908714,)
+0 child id = -1 , minmbr: (1076859444,942908714,) , maxmbrs: (1076859444,942908714,)
+1 child id = -1 , minmbr: (1252853759,881645866,) , maxmbrs: (1252853759,881645866,)
+2 child id = -1 , minmbr: (1166570543,642378998,) , maxmbrs: (1166570543,642378998,)
+3 child id = -1 , minmbr: (1144669835,917226079,) , maxmbrs: (1144669835,917226079,)
+4 child id = -1 , minmbr: (1505106377,189173351,) , maxmbrs: (1505106377,189173351,)
+5 child id = -1 , minmbr: (982159006,440750195,) , maxmbrs: (982159006,440750195,)
+6 child id = -1 , minmbr: (1002306420,530998321,) , maxmbrs: (1002306420,530998321,)
+7 child id = -1 , minmbr: (1190154080,469640665,) , maxmbrs: (1190154080,469640665,)
+node_ended
+node_id: 30 node_parent_id: 28
+minmbrs: (663346543,322974195,) , maxmbrs: (870140235,1039296235,)
+0 child id = -1 , minmbr: (686775524,1039296235,) , maxmbrs: (686775524,1039296235,)
+1 child id = -1 , minmbr: (817747533,322974195,) , maxmbrs: (817747533,322974195,)
+2 child id = -1 , minmbr: (679485636,527669967,) , maxmbrs: (679485636,527669967,)
+3 child id = -1 , minmbr: (663346543,520175671,) , maxmbrs: (663346543,520175671,)
+4 child id = -1 , minmbr: (837174489,760377523,) , maxmbrs: (837174489,760377523,)
+5 child id = -1 , minmbr: (863975390,588286925,) , maxmbrs: (863975390,588286925,)
+6 child id = -1 , minmbr: (870140235,352241360,) , maxmbrs: (870140235,352241360,)
+7 child id = -1 , minmbr: (663780084,394116293,) , maxmbrs: (663780084,394116293,)
+8 child id = -1 , minmbr: (667997272,545934395,) , maxmbrs: (667997272,545934395,)
+node_ended
+node_id: 32 node_parent_id: 28
+minmbrs: (1007616870,888243559,) , maxmbrs: (1511868087,1083641761,)
+0 child id = -1 , minmbr: (1007616870,1064390252,) , maxmbrs: (1007616870,1064390252,)
+1 child id = -1 , minmbr: (1506653618,944907363,) , maxmbrs: (1506653618,944907363,)
+2 child id = -1 , minmbr: (1117131425,1060774861,) , maxmbrs: (1117131425,1060774861,)
+3 child id = -1 , minmbr: (1359935439,1037746719,) , maxmbrs: (1359935439,1037746719,)
+4 child id = -1 , minmbr: (1511868087,888243559,) , maxmbrs: (1511868087,888243559,)
+5 child id = -1 , minmbr: (1168315500,1046572677,) , maxmbrs: (1168315500,1046572677,)
+6 child id = -1 , minmbr: (1066521919,1083641761,) , maxmbrs: (1066521919,1083641761,)
+node_ended
+node_id: 35 node_parent_id: 28
+minmbrs: (235814772,195790788,) , maxmbrs: (473653430,596205158,)
+0 child id = -1 , minmbr: (235814772,195790788,) , maxmbrs: (235814772,195790788,)
+1 child id = -1 , minmbr: (473653430,355971144,) , maxmbrs: (473653430,355971144,)
+2 child id = -1 , minmbr: (388125420,441411738,) , maxmbrs: (388125420,441411738,)
+3 child id = -1 , minmbr: (458113700,596205158,) , maxmbrs: (458113700,596205158,)
+4 child id = -1 , minmbr: (361892784,591183924,) , maxmbrs: (361892784,591183924,)
+5 child id = -1 , minmbr: (259424866,582787947,) , maxmbrs: (259424866,582787947,)
+6 child id = -1 , minmbr: (238928446,511272815,) , maxmbrs: (238928446,511272815,)
+node_ended
+node_id: 37 node_parent_id: 13
+minmbrs: (1034563350,1326152367,) , maxmbrs: (2145475865,2142183592,)
+0 child id = 18 , minmbr: (1858195536,1731502477,) , maxmbrs: (2043612533,2081053720,)
+1 child id = 7 , minmbr: (1115875460,1792186627,) , maxmbrs: (1595595235,1992642875,)
+2 child id = 9 , minmbr: (1755987692,1326152367,) , maxmbrs: (2097385544,1524099028,)
+3 child id = 21 , minmbr: (1034563350,1974468103,) , maxmbrs: (1743592769,2142183592,)
+4 child id = 31 , minmbr: (1956582001,1445005264,) , maxmbrs: (2145475865,1815457908,)
+node_ended
+node_id: 18 node_parent_id: 37
+minmbrs: (1858195536,1731502477,) , maxmbrs: (2043612533,2081053720,)
+0 child id = -1 , minmbr: (2037776664,2081053720,) , maxmbrs: (2037776664,2081053720,)
+1 child id = -1 , minmbr: (1858195536,1952541140,) , maxmbrs: (1858195536,1952541140,)
+2 child id = -1 , minmbr: (2043612533,2026317226,) , maxmbrs: (2043612533,2026317226,)
+3 child id = -1 , minmbr: (1984562929,2062867570,) , maxmbrs: (1984562929,2062867570,)
+4 child id = -1 , minmbr: (1883202264,1731502477,) , maxmbrs: (1883202264,1731502477,)
+5 child id = -1 , minmbr: (1922714050,1763139437,) , maxmbrs: (1922714050,1763139437,)
+node_ended
+node_id: 7 node_parent_id: 37
+minmbrs: (996878907,1757125012,) , maxmbrs: (1736975332,1992642875,)
+0 child id = -1 , minmbr: (1115875460,1792186627,) , maxmbrs: (1115875460,1792186627,)
+1 child id = -1 , minmbr: (1514917316,1808234623,) , maxmbrs: (1514917316,1808234623,)
+2 child id = -1 , minmbr: (1595595235,1810500213,) , maxmbrs: (1595595235,1810500213,)
+3 child id = -1 , minmbr: (1559278155,1861950639,) , maxmbrs: (1559278155,1861950639,)
+4 child id = -1 , minmbr: (1587286361,1907971059,) , maxmbrs: (1587286361,1907971059,)
+5 child id = -1 , minmbr: (1319812630,1992642875,) , maxmbrs: (1319812630,1992642875,)
+6 child id = -1 , minmbr: (1514049102,1913171274,) , maxmbrs: (1514049102,1913171274,)
+7 child id = -1 , minmbr: (1491058738,1773484311,) , maxmbrs: (1491058738,1773484311,)
+8 child id = -1 , minmbr: (1736975332,1771917431,) , maxmbrs: (1736975332,1771917431,)
+9 child id = -1 , minmbr: (996878907,1757125012,) , maxmbrs: (996878907,1757125012,)
+node_ended
+node_id: 9 node_parent_id: 37
+minmbrs: (1751686295,1224403408,) , maxmbrs: (2097385544,1574912069,)
+0 child id = -1 , minmbr: (1755987692,1359870963,) , maxmbrs: (1755987692,1359870963,)
+1 child id = -1 , minmbr: (2097385544,1405396760,) , maxmbrs: (2097385544,1405396760,)
+2 child id = -1 , minmbr: (2074649255,1492433316,) , maxmbrs: (2074649255,1492433316,)
+3 child id = -1 , minmbr: (1911003565,1524099028,) , maxmbrs: (1911003565,1524099028,)
+4 child id = -1 , minmbr: (1947648957,1326152367,) , maxmbrs: (1947648957,1326152367,)
+5 child id = -1 , minmbr: (1977411597,1496243256,) , maxmbrs: (1977411597,1496243256,)
+6 child id = -1 , minmbr: (1886243729,1224403408,) , maxmbrs: (1886243729,1224403408,)
+7 child id = -1 , minmbr: (1940312525,1269210879,) , maxmbrs: (1940312525,1269210879,)
+8 child id = -1 , minmbr: (1751686295,1574912069,) , maxmbrs: (1751686295,1574912069,)
+node_ended
+node_id: 21 node_parent_id: 37
+minmbrs: (1034563350,1974468103,) , maxmbrs: (1743592769,2142183592,)
+0 child id = -1 , minmbr: (1034563350,2012855991,) , maxmbrs: (1034563350,2012855991,)
+1 child id = -1 , minmbr: (1709890615,2055362607,) , maxmbrs: (1709890615,2055362607,)
+2 child id = -1 , minmbr: (1658643857,2064703021,) , maxmbrs: (1658643857,2064703021,)
+3 child id = -1 , minmbr: (1743592769,1974468103,) , maxmbrs: (1743592769,1974468103,)
+4 child id = -1 , minmbr: (1700005813,2142183592,) , maxmbrs: (1700005813,2142183592,)
+node_ended
+node_id: 31 node_parent_id: 37
+minmbrs: (1956582001,1032526064,) , maxmbrs: (2145475865,1815457908,)
+0 child id = -1 , minmbr: (1992837311,1445005264,) , maxmbrs: (1992837311,1445005264,)
+1 child id = -1 , minmbr: (1956582001,1815457908,) , maxmbrs: (1956582001,1815457908,)
+2 child id = -1 , minmbr: (2145475865,1691392108,) , maxmbrs: (2145475865,1691392108,)
+3 child id = -1 , minmbr: (1992742396,1634324670,) , maxmbrs: (1992742396,1634324670,)
+4 child id = -1 , minmbr: (2071976728,1597086254,) , maxmbrs: (2071976728,1597086254,)
+5 child id = -1 , minmbr: (1996040494,1032526064,) , maxmbrs: (1996040494,1032526064,)
+6 child id = -1 , minmbr: (2016873431,1138030496,) , maxmbrs: (2016873431,1138030496,)
+node_ended
+ed
+on que 13
+on que1 13
+on que 10
+on que 12
+on que 22
+on que 28
+on que 37
+1 1269210879 (1326152367,2142183592)
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+INSERT
+
+TRUE
+
+TRUE
+
+FALSE
+
+INSERT
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+INSERT
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+INSERT
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+INSERT
+
+INSERT
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+INSERT
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+INSERT
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+INSERT
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+INSERT
+
+FALSE
+
+INSERT
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+INSERT
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+INSERT
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+INSERT
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+INSERT
+
+FALSE
+
+FALSE
+
+INSERT
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+INSERT
+
+FALSE
+
+INSERT
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+INSERT
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+INSERT
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+INSERT
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+INSERT
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+FALSE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TRUE
+
+TC2: FAILED
