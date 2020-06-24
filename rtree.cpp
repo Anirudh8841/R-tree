@@ -524,7 +524,7 @@ void print_node(Node node){
             //and the upcoming ones will also be place fillers
             break;
         }
-        cout<< "child id = "<<node.children[i].id<< " , minmbr: (";
+        cout<< i <<" child id = "<<node.children[i].id<< " , minmbr: (";
         for(int j=0;j<d;j++){
             cout<<node.children[i].minmbr[j]<<",";
         }
@@ -730,11 +730,13 @@ void buildRecursiveTree(int startNodeID, int endNodeID, vector<int> &nodes_count
 				newChild.minmbr = nodes_collected[i].minmbr;
 				newChild.maxmbr = nodes_collected[i].maxmbr;
 				parentNode.children[i] = newChild;
-
+                parentNode.children[i].id = nodes_collected[i].id;
 				//also update the parentID inside the nodes in nodes_collected
 				nodes_collected[i].parent_id = parentNode.id;
 				save(nodes_collected[i],fh); //since we changed parent so save this node to page
-			}
+                // cout<<"printing inrec"<<endl;
+                // print_node(nodes_collected[i]);
+            }
 
 			//update the MBR of this parent node by iterating the children
 			for(Entry child: parentNode.children){
@@ -745,6 +747,8 @@ void buildRecursiveTree(int startNodeID, int endNodeID, vector<int> &nodes_count
 			}
 
 			save(parentNode,fh);
+            //  cout<<"succ  inrec"<<endl;
+                // print_node(parentNode);
 
 		} 
 	}
@@ -776,11 +780,12 @@ void RTree::bulkload(int numPoints,FileHandler& fo,FileHandler& fh){
 
 			//fetch 1 int and store it in ongoingPoint vector at location ongoingPointIndex
 			memcpy (&ongoingPoint[ongoingPointIndex],&data[4*locationInPage],  sizeof(int));
-            // cout<< "val "<<ongoingPoint[ongoingPointIndex]<<endl;
+            // cout<< numPointsRead<<" "<<locationInPage<<" val "<<ongoingPoint[ongoingPointIndex]<<",";
 			locationInPage+=1;
 			ongoingPointIndex++;
 
 			if(ongoingPointIndex==d){
+                // cout<<endl;
 
 				//means completed one d dimensional point
 				numPointsRead++;
@@ -789,7 +794,7 @@ void RTree::bulkload(int numPoints,FileHandler& fo,FileHandler& fh){
 				ongoingPointIndex = 0;
 
 				//check whether we have formed a block
-                if(points_collected.size() == maxCap || numPointsRead==numPoints-1){// min(maxCap, remaining points)
+                if(points_collected.size() == maxCap || numPointsRead==numPoints){// min(maxCap, remaining points)
 					//create a new leaf node here
 
 					Node leafNode (nodes_count, -1);
@@ -845,6 +850,6 @@ void RTree::bulkload(int numPoints,FileHandler& fo,FileHandler& fh){
     // cout<<" num_nodes2 "<<n_c[0]<<endls;
     root_id=n_c[0]-1;
     num_nodes = n_c[0];
-    // print_tree(root_id,fh);
+    // print_tree(,fh);
 
 }
