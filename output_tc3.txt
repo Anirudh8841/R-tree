@@ -1,4 +1,4 @@
 BULKLOAD
 
-FALSE
+TRUE
 

@@ -62,6 +62,9 @@ int main(int argc, char const *argv[])
     while (getline(infile, line))
     {
         count++;
+        // if(count%100==0){
+        //     cout<<count<<endl;
+        // }
         istringstream iss(line);
         string op;
         iss >> op;
@@ -98,7 +101,7 @@ int main(int argc, char const *argv[])
             tree.insert(p,fh);
           
         } else if (op == "QUERY") {
-            tree.print_t(tree.ret_root_id(),fh);
+            // tree.print_t(tree.ret_root_id(),fh);
 
             vector<int> p;
             int px;

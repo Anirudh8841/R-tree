@@ -690,26 +690,7 @@ bool search(int nodeID, const vector<int>& P, FileHandler& fh,bool print_comment
             else{
                 //point is valid
                 //check whether this point is equal to P
-                
-                bool equals = true;
-                for(int i=0;i<d;i++){
-                    if(print_comments&& nodeID==146){
-                        cout<<"on que2 "<<i <<" "<< child.minmbr[i]<<" , "<<child.maxmbr[i]<<" p "<<P[i]<<endl; 
-                    }
-                    if(child.minmbr[i]!=P[i] || child.maxmbr[i]!=P[i]){
-                        if(print_comments&& nodeID==146){
-                            cout<<"on que2 "<<i <<" "<< child.minmbr[i]<<" , "<<child.maxmbr[i]<<" p "<<P[i]<<endl; 
-                        }
-                        equals = false;
-                        break;
-                    }
-                }
-               
-                if(equals){
-                //     if(print_comments&& nodeID==146){
-                // //    cout<<" ch "<<child.id<< <<endl;
-                //         // cout<<"on que2 "<<i <<" "<< child.minmbr[i]<<" , "<<child.maxmbr[i]<<" p "<<P[i]<<endl; 
-                //     }
+                if(child.minmbr==P){
                     return true;
                 }
             }
@@ -730,7 +711,15 @@ bool search(int nodeID, const vector<int>& P, FileHandler& fh,bool print_comment
                 continue;
             }
             else{
-                if(search(child.id,P,fh,print_comments)){
+                bool liesInside_child=true;
+                for(int i=0;i<d;i++){
+                    if(P[i] < child.minmbr[i] || P[i] > child.maxmbr[i]){
+
+                        liesInside_child = false;
+                        break;
+                    }
+                }
+                if(liesInside_child && search(child.id,P,fh,print_comments)){
                     return true;
                 }
             }
@@ -802,7 +791,7 @@ void buildRecursiveTree(int startNodeID, int endNodeID, vector<int> &nodes_count
 
 		} 
 	}
-	int start = endNodeID+1;
+	int start = endNodeID;
 	int end = nodes_count[0];
     
 // cout<<" compl "<< start << end <<endl;
@@ -814,6 +803,8 @@ void buildRecursiveTree(int startNodeID, int endNodeID, vector<int> &nodes_count
 
 void RTree::bulkload(int numPoints,FileHandler& fo,FileHandler& fh){
     int m = floor(PAGE_CONTENT_SIZE/sizeof(int));
+    m = (m/d)*d;
+    cout<<"m = "<<m<<endl;
     int nodes_count=0;
     int numPointsRead = 0;
     vector< vector<int>> points_collected;
@@ -838,13 +829,18 @@ void RTree::bulkload(int numPoints,FileHandler& fo,FileHandler& fh){
 			if(ongoingPointIndex==d){
 
                 // cout<<endl;
-                // cout<<"INSERT";
+                // cout<<"INSERT ";
+                // for(int i=0;i<d;i++){
+                //     cout << ongoingPoint[i]<<" ";
+                // }
+                // cout<<endl;
 				//means completed one d dimensional point
 				numPointsRead++;
 				points_collected.push_back(ongoingPoint);
 				// ongoingPoint = new vector<int>(d,0);  //create  new point  doubt 1
 				ongoingPointIndex = 0;
-
+                // cout<<"numPointsRead "<<numPointsRead;
+                // cout<<"numPoints "<<numPoints;
 				//check whether we have formed a block
                 if(points_collected.size() == maxCap || numPointsRead==numPoints){// min(maxCap, remaining points)
 					//create a new leaf node here
@@ -879,7 +875,7 @@ void RTree::bulkload(int numPoints,FileHandler& fo,FileHandler& fh){
 		else{
 			//we have completed a page need to start reading from next page
             fo.UnpinPage(last_page_read);
-
+            ongoingPointIndex = 0;
 			ph = fo.NextPage(last_page_read);
             last_page_read++;
 			data = ph.GetData();
