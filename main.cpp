@@ -98,6 +98,8 @@ int main(int argc, char const *argv[])
             tree.insert(p,fh);
           
         } else if (op == "QUERY") {
+            tree.print_t(tree.ret_root_id(),fh);
+
             vector<int> p;
             int px;
             while (iss >> px) {

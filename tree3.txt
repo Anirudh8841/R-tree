@@ -1,0 +1,18 @@
+rm -f *.o
+rm -f temp.txt
+# rm -f sample_run
+rm -f rtree
+g++ -std=c++11 -c buffer_manager.cpp
+g++ -std=c++11 -c file_manager.cpp
+g++ -std=c++11 -c -g rtree.cpp
+g++ -std=c++11 -c -g main.cpp
+g++ -std=c++11 -o rtree buffer_manager.o file_manager.o rtree.o main.o
+node_id: 12 node_parent_id: -1
+minmbrs: (192240847,1272405769,712576654,) , maxmbrs: (192240847,1272405769,712576654,)
+0 child id = 10 , minmbr: (192240847,1272405769,712576654,) , maxmbrs: (192240847,1272405769,712576654,)
+node_ended
+node_id: 10 node_parent_id: 12
+minmbrs: (192240847,1272405769,712576654,) , maxmbrs: (192240847,1272405769,712576654,)
+0 child id = -1 , minmbr: (192240847,1272405769,712576654,) , maxmbrs: (192240847,1272405769,712576654,)
+node_ended
+TC3: FAILED
