@@ -7,10 +7,15 @@ Node fetch(int id,FileHandler& fh){
 
     int pagenum = floor(id/max_num_nodes);
     int offset = (id%max_num_nodes)*node_size;
-
+    if(pagenum>fh.LastPage().GetPageNum()){
+        cout<< "error in fetch " <<pagenum<<endl;
+    }
     PageHandler ph = fh.PageAt(pagenum);
 
     char *data = ph.GetData ();
+
+    // cout<< "fetch  "<< fh.LastPage().GetPageNum() << " > "<<pagenum <<endl;
+
     Node node(0,-1);
 
     memcpy (&node.id,&data[offset], sizeof(int));
@@ -40,19 +45,20 @@ Node fetch(int id,FileHandler& fh){
             temp=temp+4;
         }   
     }
-    // fh.UnpinPage(pagenum);
+    fh.UnpinPage(pagenum);
+    fh.FlushPage(pagenum);
     return node;    
 }
 
 void save(Node node,FileHandler& fh){
-
+    
     int pagenum = floor(node.id/max_num_nodes);
     int offset = (node.id%max_num_nodes)*node_size;
     
     int n = fh.LastPage().GetPageNum();
     
     PageHandler ph;
-    
+    // cout<< "save "<< n << " > "<<pagenum <<endl;
     if(pagenum == (n+1)){
         ph = fh.NewPage();
     }
@@ -413,16 +419,16 @@ void addChild(Node& currNode, int childID,const vector<int> &child_minmbr,const 
 
 }
 void insert_and_update(Node& currNode,const vector<int>& P, FileHandler& fh){
+
     if(currNode.children[0].id==-1){
-        // cout<<"cas1 "<< currNode.id<<endl;
         for(int i=0;i<d;i++){
             currNode.minmbr[i] = min(currNode.minmbr[i],P[i]);
             currNode.maxmbr[i] = max(currNode.maxmbr[i],P[i]);
         }
         addChild(currNode,-1,P,P,fh);
+
     }
     else{
-        // cout<<"started "<< currNode.id<< endl;
         Entry min_MBR_child;
         long double volumeIncrease = LDBL_MAX; //long double because volume will be very large
         long double tiebreaker1Vol = LDBL_MAX; //long double because volume will be very large
@@ -491,7 +497,10 @@ void insert_and_update(Node& currNode,const vector<int>& P, FileHandler& fh){
         int child_id = min_MBR_child.id;
         // cout<<"cas20 "<< child_id <<endl;
         Node nextNode = fetch(child_id,fh); //fetchNodeFromDisk is some fetch function which you have implemented
+        // cout<<"ended0  "<< currNode.id<<" "<<nextNode.id<<endl;
+
         insert_and_update(nextNode,P,fh); 
+        // cout<<"ended1  "<< currNode.id<<endl;
 
         // Entry min_MBR_child;
 
@@ -597,13 +606,11 @@ void RTree::insert(const vector<int>& p, FileHandler& fh){
         Node rootNode = fetch(root_id,fh);
         insert_and_update(rootNode, p,fh);
 
-        // cout<<" rioot "<<root_id<<endl;
+        // cout<<" num "<<num_nodes<<endl;
+        // print_tree(root_id,fh);
         
     }
-    if(p[0]==100){
-    print_tree(root_id,fh);
-
-    }
+    
 }
 
 
@@ -689,87 +696,6 @@ bool search(int nodeID, const vector<int>& P, FileHandler& fh){
 
 
 }
-// bool search(int nodeID, const vector<int>& P, FileHandler& fh){
-// 	//fetch the node node from disk using nodeID
-    
-//     Node currNode = fetch(nodeID,fh);
-//     for (int i = 0; i < d; i++)
-//     {
-//         if(P[i] < currNode.minmbr[i] || P[i] > currNode.maxmbr[i]){
-//             return false;
-//         }
-//     }
-
-    
-    
-// 	if(currNode.children[0].id==-1){
-//         // cout<<" if1 "<<nodeID<<endl;
-
-// 		//means the currNode is a leaf and its children are all points
-
-// 		//go over these children points and check whether our search point is among one of them or not
-// 		for(Entry child : currNode.children){
-// 			if(child.minmbr[0]==INT_MAX && child.maxmbr[0]==INT_MIN){
-// 				//means this is just a place filler child
-// 				//and the upcoming ones will also be place fillers
-// 				return false;
-// 			}
-// 			else{
-// 				//point is valid
-// 				//check whether this point is equal to P
-// 				bool equals = true;
-// 				for(int i=0;i<d;i++){
-// 					if(child.minmbr[i]!=P[i] || child.maxmbr[i]!=P[i]){
-// 						equals = false;
-// 						break;
-// 					}
-// 				}
-
-// 				if(equals){
-// 					return true;
-// 				}
-// 			}
-// 		}
-
-// 		return false;
-// 	}
-
-// 	else{
-// 		//means currNode is not a leaf so we have to check children of this currNode
-
-// 		for(Entry child : currNode.children){
-// 			//check whether child is valid or just a place filler
-// 			if(child.minmbr[0]==INT_MAX && child.maxmbr[0]==INT_MIN){
-// 				//means this is just a place filler child
-// 				//and the upcoming ones will also be place fillers
-// 				break;
-// 			}
-// 			else{
-// 				//if child is valid check if P lies inside this child's MBR in each dimension
-// 				//if it does then we recurse on that child
-// 				bool liesInside = true;
-
-// 				for(int i=0;i<d;i++){
-// 					if(P[i] < child.minmbr[i] || P[i] > child.maxmbr[i]){
-// 						liesInside = false;
-// 						break;
-// 					}
-// 				}
-
-// 				if(liesInside){
-// 					//P lies inside so recurse on this child
-// 					if( search(child.id, P,fh) ){
-// 						return true;
-// 					}
-// 				}
-// 			}
-// 		}
-
-// 		return false;
-// 	}
-
-
-// }
 
 bool RTree::query(const vector<int>& P, FileHandler& fh){
 	//fetch the node node from disk using nodeID
@@ -850,10 +776,12 @@ void RTree::bulkload(int numPoints,FileHandler& fo,FileHandler& fh){
 
 			//fetch 1 int and store it in ongoingPoint vector at location ongoingPointIndex
 			memcpy (&ongoingPoint[ongoingPointIndex],&data[4*locationInPage],  sizeof(int));
+            // cout<< "val "<<ongoingPoint[ongoingPointIndex]<<endl;
 			locationInPage+=1;
 			ongoingPointIndex++;
 
 			if(ongoingPointIndex==d){
+
 				//means completed one d dimensional point
 				numPointsRead++;
 				points_collected.push_back(ongoingPoint);
@@ -869,6 +797,7 @@ void RTree::bulkload(int numPoints,FileHandler& fo,FileHandler& fh){
 					//assign the children to this leaf node as points_collected
 					for(int i=0;i<points_collected.size();i++){
 						Entry newChild(-1);
+                        // cout<< "val1 "<<points_collected[i][0]<<endl;
 						newChild.minmbr = points_collected[i];
 						newChild.maxmbr = points_collected[i];
 						leafNode.children[i] = newChild;
@@ -881,6 +810,7 @@ void RTree::bulkload(int numPoints,FileHandler& fo,FileHandler& fh){
 						}
 					}
 					save(leafNode,fh);
+                    // print_node(leafNode);
 					points_collected.clear();
 				}
 			}
@@ -891,11 +821,18 @@ void RTree::bulkload(int numPoints,FileHandler& fo,FileHandler& fh){
 
 		else{
 			//we have completed a page need to start reading from next page
+            fo.UnpinPage(last_page_read);
+
 			ph = fo.NextPage(last_page_read);
+            last_page_read++;
 			data = ph.GetData();
 			locationInPage = 0; //update the location in page
 		}
-	} 
+	}
+    
+    fo.UnpinPage(last_page_read);
+    fo.FlushPage(last_page_read);
+
 
 
 	//at this point we have stored all the points in the leaf nodes
@@ -905,8 +842,9 @@ void RTree::bulkload(int numPoints,FileHandler& fo,FileHandler& fh){
     n_c.push_back(nodes_count);
     // cout<<" num_node1 "<< nodes_count<<endl;
 	buildRecursiveTree(start,end, n_c,fh);
-    // cout<<" num_nodes2 "<<n_c[0]<<endl;
-    root_id=n_c[0];
+    // cout<<" num_nodes2 "<<n_c[0]<<endls;
+    root_id=n_c[0]-1;
     num_nodes = n_c[0];
+    // print_tree(root_id,fh);
 
 }

@@ -17,10 +17,10 @@ file_manager.o : file_manager.cpp
 	g++ -std=c++11 -c file_manager.cpp
 
 rtree.o : rtree.cpp
-	g++ -std=c++11 -c rtree.cpp
+	g++ -std=c++11 -c -g rtree.cpp
 
 main.o : main.cpp
-	g++ -std=c++11 -c main.cpp
+	g++ -std=c++11 -c -g main.cpp
 
 clean :
 	rm -f *.o

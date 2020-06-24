@@ -71,7 +71,7 @@ public:
     {
         maxCap = maxChild;
         d = dimension;
-        node_size =  (2*maxCap+2+maxCap*(2*d+1))*4; // 64 bytes
+        node_size =  (2*maxCap+2+maxCap*(2*d+1))*4; // 64 bytes 288
         
         max_num_nodes = floor(PAGE_CONTENT_SIZE/node_size);
         num_nodes=0;

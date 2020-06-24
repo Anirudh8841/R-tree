@@ -40,6 +40,11 @@ int main(int argc, char const *argv[])
         return 1;
     }
 
+// string inputFile ="Testcases/TC_1/queries_2_10_100_100.txt" ;
+//     int maxCap = 10;
+//     int dimension = 2;
+//     string outputFile = "output_tc1.txt";
+
     string inputFile = argv[1];
     int maxCap = stoi(argv[2]);
     int dimension = stoi(argv[3]);
@@ -51,12 +56,13 @@ int main(int argc, char const *argv[])
     string line;
 
     FileManager fm;
+     
 	// Create a brand new file
 	FileHandler fh = fm.CreateFile("temp.txt");
     // fm.CloseFile(fh);
 	// cout << "File created " << endl;
     int count=0;
-	
+	// fm.PrintBuffer();
     while (getline(infile, line))
     {
         istringstream iss(line);
@@ -65,28 +71,37 @@ int main(int argc, char const *argv[])
         if (op == "BULKLOAD") {
             cout<<"BULKLOAD"<<endl;
             cout<<endl;
+            // continue;
             string infile ;
             int num;
             iss>> infile;
             iss>> num;
 
-            cout<< num << " st "<<infile<< endl;
+            // cout<< num << " st "<<infile<< endl;
 
             FileHandler f = fm.OpenFile(infile.c_str());
 
             tree.bulkload(num,f,fh);
             
 
+            fm.CloseFile(f);
+            // fm.ClearBuffer();
+            // fm.PrintBuffer();
+            // f.CloseFile(infile.c_str());
+            
+
         } else if (op == "INSERT") {
             count++;
-            cout<<"INSERT "<<count <<endl;
+            cout<<"INSERT"<<endl;
             cout<<endl;
             vector<int> p;
             int px;
             while (iss >> px) {
                 p.push_back(px);
             }
+
             tree.insert(p,fh);
+            // fm.PrintBuffer();
             
             // cout<<"inserted "<< fh.LastPage().GetPageNum()<<endl;
 
