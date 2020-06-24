@@ -87,7 +87,7 @@ int main(int argc, char const *argv[])
 
             fm.CloseFile(f);
 
-            tree.print_t(tree.ret_root_id(),fh);
+            // tree.print_t(tree.ret_root_id(),fh);
             // fm.ClearBuffer();
             // fm.PrintBuffer();
             // f.CloseFile(infile.c_str());
@@ -95,8 +95,11 @@ int main(int argc, char const *argv[])
 
         } else if (op == "INSERT") {
             // count++;
-            // cout<<"INSERT"<<endl;
-            // cout<<endl;
+            if(count>1000){
+                cout<<"INSERT"<<endl;
+                cout<<endl;
+
+            }
             vector<int> p;
             int px;
             while (iss >> px) {
@@ -104,56 +107,30 @@ int main(int argc, char const *argv[])
             }
 
             tree.insert(p,fh);
-            if(count==100){
+            if(count==807){
                 // cout<<"in c100"<<endl;
-                tree.print_t(tree.ret_root_id(),fh);
+                // tree.print_t(tree.ret_root_id(),fh);
             }
            
-            // tree.print_t()
-            // fm.PrintBuffer();
-            
-            // cout<<"inserted "<< fh.LastPage().GetPageNum()<<endl;
-
-            // FileManager fm;
-            // tree.insert(p, fm, fh);
-
-            // Reopen the same file, but for reading this time
-            // FileHandler fh = fm.OpenFile ("temp.txt");
-            // cout << "File opened" << endl;
-
-            // Get the very first page and its data
-            // PageHandler ph = fh.FirstPage ();
-            // char *data = ph.GetData ();
-
-            // cout<<"done"<<endl;
-            // Node n(0,-1);
-            // cout<<" "<< sizeof(n)<<endl;
-            // // Output the first integer
-            // // cout<< sizeof(n)<<endl;
-            // int n;
-            // memcpy (&n, &data[0], sizeof(n));
-            // cout << "First number: " << n.id <<" " << endl;
-            // fm.CloseFile(fh);
-	        // fm.DestroyFile ("temp.txt");
-
+          
         } else if (op == "QUERY") {
             vector<int> p;
             int px;
             while (iss >> px) {
                 p.push_back(px);
             }
-            // if(p[0]==1940312525){
-            //     cout<<" 708  sap "<<p[0]<<endl;
-            //     // tree.print_t(tree.ret_root_id(),fh);
+            bool print_comments = false;
+            // if(count==1059){
+            //     print_comments=true;
             // }
-            bool que = tree.query(p,fh);
-            if(que){
-                cout << "TRUE"<< endl;
-                // cout<<endl;
+            bool que = tree.query(p,fh,print_comments);
+            if(que ){
+                cout <<"TRUE"<< endl;
+                cout<<endl;
             }
             else{
-                cout<<"FALSE"<<endl;
-                // cout<<endl;
+                cout <<"FALSE"<<endl;
+                cout<<endl;
             }
         }
     }

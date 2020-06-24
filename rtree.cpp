@@ -159,19 +159,29 @@ void simpleBubbleUpToTheRoot(Node currNode, FileHandler& fh){
         parentNode.minmbr[i] = min(parentNode.minmbr[i], currNode.minmbr[i]);
         parentNode.maxmbr[i] = max(parentNode.maxmbr[i], currNode.maxmbr[i]);
     }
-
-    //update the MBR of that child in parent children list which matches currNode's id
-    for(Entry child : parentNode.children){
-        if(child.id==currNode.id){
-
-            for(int i=0;i<d;i++){
-                child.minmbr[i] = min(child.minmbr[i], currNode.minmbr[i]);
-                child.maxmbr[i] = max(child.maxmbr[i], currNode.maxmbr[i]);
+    for(int i=0;i<parentNode.children.size();i++){
+        
+        if(parentNode.children[i].id==currNode.id){
+             for(int j=0;j<d;j++){
+                parentNode.children[i].minmbr[j] = currNode.minmbr[j];
+                parentNode.children[i].maxmbr[j] = currNode.maxmbr[j];
             }
 
             break;
         }
     }
+    //update the MBR of that child in parent children list which matches currNode's id
+    // for(Entry child : parentNode.children){
+    //     if(child.id==currNode.id){
+
+    //         for(int i=0;i<d;i++){
+    //             child.minmbr[i] = min(child.minmbr[i], currNode.minmbr[i]);
+    //             child.maxmbr[i] = max(child.maxmbr[i], currNode.maxmbr[i]);
+    //         }
+
+    //         break;
+    //     }
+    // }
 
 
     save(parentNode,fh); //since parentNode is changed so update it in page
@@ -647,7 +657,7 @@ bool search(int nodeID, const vector<int>& P, FileHandler& fh,bool print_comment
         //     cout<<P[i]<<" ("<<currNode.minmbr[i]<<","<<currNode.maxmbr[i]<<")"<<endl;
         // }
         if(P[i] < currNode.minmbr[i] || P[i] > currNode.maxmbr[i]){
-            if(nodeID==37 && print_comments){
+            if(nodeID==146 && print_comments){
                 cout<<i<<" "<<P[i]<<" ("<<currNode.minmbr[i]<<","<<currNode.maxmbr[i]<<")"<<endl;
             }
             liesInside_currNode = false;
@@ -659,9 +669,9 @@ bool search(int nodeID, const vector<int>& P, FileHandler& fh,bool print_comment
         return false;
     }
 
-// if(print_comments){
-//         cout<<"on que1 "<< nodeID<<endl; 
-//     }
+    if(print_comments){
+        cout<<"on que1 "<< nodeID<<endl; 
+    }
     // cout << "startID: "<<nodeID<<endl;
 
     if(currNode.children[0].id==-1){
@@ -670,6 +680,7 @@ bool search(int nodeID, const vector<int>& P, FileHandler& fh,bool print_comment
 
         //go over these children points and check whether our search point is among one of them or not
         for(Entry child : currNode.children){
+
             if(child.minmbr[0]==INT_MAX && child.maxmbr[0]==INT_MIN){
                 //means this is just a place filler child
                 //and the upcoming ones will also be place fillers
@@ -679,15 +690,26 @@ bool search(int nodeID, const vector<int>& P, FileHandler& fh,bool print_comment
             else{
                 //point is valid
                 //check whether this point is equal to P
+                
                 bool equals = true;
                 for(int i=0;i<d;i++){
+                    if(print_comments&& nodeID==146){
+                        cout<<"on que2 "<<i <<" "<< child.minmbr[i]<<" , "<<child.maxmbr[i]<<" p "<<P[i]<<endl; 
+                    }
                     if(child.minmbr[i]!=P[i] || child.maxmbr[i]!=P[i]){
+                        if(print_comments&& nodeID==146){
+                            cout<<"on que2 "<<i <<" "<< child.minmbr[i]<<" , "<<child.maxmbr[i]<<" p "<<P[i]<<endl; 
+                        }
                         equals = false;
                         break;
                     }
                 }
-
+               
                 if(equals){
+                //     if(print_comments&& nodeID==146){
+                // //    cout<<" ch "<<child.id<< <<endl;
+                //         // cout<<"on que2 "<<i <<" "<< child.minmbr[i]<<" , "<<child.maxmbr[i]<<" p "<<P[i]<<endl; 
+                //     }
                     return true;
                 }
             }
@@ -720,13 +742,13 @@ bool search(int nodeID, const vector<int>& P, FileHandler& fh,bool print_comment
 
 }
 
-bool RTree::query(const vector<int>& P, FileHandler& fh){
+bool RTree::query(const vector<int>& P, FileHandler& fh,bool print_comments){
 	//fetch the node node from disk using nodeID
-    bool print_comments=false;
-    if(P[0]==1940312525){
-        cout<<"ed"<<endl;
-        print_comments=true;
-    }
+    // bool print_comments=false;
+    // if(P[0]==1940312525){
+    //     cout<<"ed"<<endl;
+    //     print_comments=true;
+    // }
     return search(root_id,P,fh,print_comments);
 }
 
@@ -753,7 +775,7 @@ void buildRecursiveTree(int startNodeID, int endNodeID, vector<int> &nodes_count
 
 			//assign the children to this parent node as nodes_collected
 			for(int i=0;i<nodes_collected.size();i++){
-				Entry newChild(-1);
+				Entry newChild(nodes_collected[i].id);
 				newChild.minmbr = nodes_collected[i].minmbr;
 				newChild.maxmbr = nodes_collected[i].maxmbr;
 				parentNode.children[i] = newChild;
@@ -802,21 +824,21 @@ void RTree::bulkload(int numPoints,FileHandler& fo,FileHandler& fh){
 	int last_page_read = 0;
 	int locationInPage=0;
 	char *data = ph.GetData ();
-    cout<<"INSERT";
+    // cout<<"INSERT";
 	while(numPointsRead<numPoints){
 
 		if (locationInPage<m){
 
 			//fetch 1 int and store it in ongoingPoint vector at location ongoingPointIndex
 			memcpy (&ongoingPoint[ongoingPointIndex],&data[4*locationInPage],  sizeof(int));
-            cout<<" "<<ongoingPoint[ongoingPointIndex];
+            // cout<<" "<<ongoingPoint[ongoingPointIndex];
 			locationInPage+=1;
 			ongoingPointIndex++;
 
 			if(ongoingPointIndex==d){
 
-                cout<<endl;
-                cout<<"INSERT";
+                // cout<<endl;
+                // cout<<"INSERT";
 				//means completed one d dimensional point
 				numPointsRead++;
 				points_collected.push_back(ongoingPoint);

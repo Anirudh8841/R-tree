@@ -77,7 +77,7 @@ public:
         num_nodes=0;
     }
     void insert(const vector<int>& p, FileHandler& fh); // at the end - update root
-    bool query(const vector<int>& p, FileHandler& fh); // at the end - update root
+    bool query(const vector<int>& p, FileHandler& fh,bool print_comments); // at the end - update root
     void bulkload(int num, FileHandler& fo, FileHandler& fh); // at the end - update root
     void print_t(int nodeID,FileHandler& fh);
     int ret_root_id(); 
