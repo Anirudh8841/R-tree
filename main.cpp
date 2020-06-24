@@ -40,11 +40,6 @@ int main(int argc, char const *argv[])
         return 1;
     }
 
-// string inputFile ="Testcases/TC_1/queries_2_10_100_100.txt" ;
-//     int maxCap = 10;
-//     int dimension = 2;
-//     string outputFile = "output_tc1.txt";
-
     string inputFile = argv[1];
     int maxCap = stoi(argv[2]);
     int dimension = stoi(argv[3]);
@@ -56,13 +51,14 @@ int main(int argc, char const *argv[])
     string line;
 
     FileManager fm;
+
+    ofstream outfile;
+    outfile.open(outputFile);
      
 	// Create a brand new file
+
 	FileHandler fh = fm.CreateFile("temp.txt");
-    // fm.CloseFile(fh);
-	// cout << "File created " << endl;
     int count=0;
-	// fm.PrintBuffer();
     while (getline(infile, line))
     {
         count++;
@@ -70,36 +66,29 @@ int main(int argc, char const *argv[])
         string op;
         iss >> op;
         if (op == "BULKLOAD") {
-            cout<<"BULKLOAD"<<endl;
-            cout<<endl;
             // continue;
+            outfile << "BULKLOAD"<<endl;
+            outfile <<endl; 
+
             string infile ;
             int num;
             iss>> infile;
             iss>> num;
 
-            // cout<< num << " st "<<infile<< endl;
-
             FileHandler f = fm.OpenFile(infile.c_str());
 
             tree.bulkload(num,f,fh);
-            
 
             fm.CloseFile(f);
 
             // tree.print_t(tree.ret_root_id(),fh);
             // fm.ClearBuffer();
             // fm.PrintBuffer();
-            // f.CloseFile(infile.c_str());
-            
-
         } else if (op == "INSERT") {
-            // count++;
-            if(count>1000){
-                cout<<"INSERT"<<endl;
-                cout<<endl;
+            // continue;
+            outfile<<"INSERT"<<endl;
+            outfile<<endl;
 
-            }
             vector<int> p;
             int px;
             while (iss >> px) {
@@ -107,11 +96,6 @@ int main(int argc, char const *argv[])
             }
 
             tree.insert(p,fh);
-            if(count==807){
-                // cout<<"in c100"<<endl;
-                // tree.print_t(tree.ret_root_id(),fh);
-            }
-           
           
         } else if (op == "QUERY") {
             vector<int> p;
@@ -120,21 +104,20 @@ int main(int argc, char const *argv[])
                 p.push_back(px);
             }
             bool print_comments = false;
-            // if(count==1059){
-            //     print_comments=true;
-            // }
+            
             bool que = tree.query(p,fh,print_comments);
             if(que ){
-                cout <<"TRUE"<< endl;
-                cout<<endl;
+                outfile <<"TRUE"<< endl;
+                outfile<<endl;
             }
             else{
-                cout <<"FALSE"<<endl;
-                cout<<endl;
+                outfile <<"FALSE"<<endl;
+                outfile<<endl;
             }
         }
     }
     fm.CloseFile (fh);
+    outfile.close();
     fm.DestroyFile("temp.txt");
 
     return 0;
