@@ -1,6 +1,9 @@
 #include "rtree.h"
+#include <chrono> 
+using namespace std::chrono; 
 
 int root_id=-1, maxCap=0 ,d=0,node_size=0,num_nodes=0,max_num_nodes=0;
+int fetch_time;
 
 
 Node fetch(int id,FileHandler& fh){
@@ -264,9 +267,9 @@ void addChild(Node& currNode, int childID,const vector<int> &child_minmbr,const 
                     continue; //invalid child found so skip
                 }
 
-                if(child1.minmbr[0]==INT_MAX && child1.maxmbr[0]==INT_MIN){
-                    break; //invalid child and the upcoming ones will be invalid too as j>i
-                }
+                // if(child1.minmbr[0]==INT_MAX && child1.maxmbr[0]==INT_MIN){
+                //     break; //invalid child and the upcoming ones will be invalid too as j>i
+                // }
 
                 long double euclidDist = 0.0;
                 for(int k=0; k<d; k++){
@@ -648,7 +651,14 @@ bool search(int nodeID, const vector<int>& P, FileHandler& fh,bool print_comment
         cout<<"on que "<< nodeID<<endl; 
         
     }
+    auto start = high_resolution_clock::now(); 
+
     Node currNode = fetch(nodeID,fh);
+
+    auto end_f = high_resolution_clock::now(); 
+
+    fetch_time = fetch_time+duration_cast<microseconds>(end_f - start).count(); 
+
 
 
     bool liesInside_currNode = true;
@@ -684,8 +694,8 @@ bool search(int nodeID, const vector<int>& P, FileHandler& fh,bool print_comment
             if(child.minmbr[0]==INT_MAX && child.maxmbr[0]==INT_MIN){
                 //means this is just a place filler child
                 //and the upcoming ones will also be place fillers
-                continue;
-                // return false;
+                // continue;
+                return false;
             }
             else{
                 //point is valid
@@ -707,8 +717,8 @@ bool search(int nodeID, const vector<int>& P, FileHandler& fh,bool print_comment
             if(child.minmbr[0]==INT_MAX && child.maxmbr[0]==INT_MIN){
                 //means this is just a place filler child
                 //and the upcoming ones will also be place fillers
-                // break;
-                continue;
+                break;
+                // continue;
             }
             else{
                 bool liesInside_child=true;
@@ -738,7 +748,17 @@ bool RTree::query(const vector<int>& P, FileHandler& fh,bool print_comments){
     //     cout<<"ed"<<endl;
     //     print_comments=true;
     // }
-    return search(root_id,P,fh,print_comments);
+    auto start = high_resolution_clock::now(); 
+    fetch_time=0;
+
+    bool result = search(root_id,P,fh,print_comments);
+    
+    auto end_s = high_resolution_clock::now(); 
+
+    int search_time = duration_cast<microseconds>(end_s - start).count(); 
+
+    cout<< "total_search_time = "<< search_time<<" , fetch_t = "<< fetch_time << " , diff = "<<((search_time-fetch_time)*100)/search_time<<" %"<<endl; 
+    return result;
 }
 
 // need to edit
@@ -804,7 +824,6 @@ void buildRecursiveTree(int startNodeID, int endNodeID, vector<int> &nodes_count
 void RTree::bulkload(int numPoints,FileHandler& fo,FileHandler& fh){
     int m = floor(PAGE_CONTENT_SIZE/sizeof(int));
     m = (m/d)*d;
-    cout<<"m = "<<m<<endl;
     int nodes_count=0;
     int numPointsRead = 0;
     vector< vector<int>> points_collected;

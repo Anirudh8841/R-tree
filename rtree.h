@@ -8,6 +8,7 @@
 using namespace std;
 
 extern int root_id, maxCap,d,num_nodes, max_num_nodes;
+extern int fetch_time;
 
 extern int node_size;
 
