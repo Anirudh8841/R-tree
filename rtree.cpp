@@ -757,7 +757,7 @@ bool RTree::query(const vector<int>& P, FileHandler& fh,bool print_comments){
 
     int search_time = duration_cast<microseconds>(end_s - start).count(); 
 
-    cout<< "total_search_time = "<< search_time<<" , fetch_t = "<< fetch_time << " , diff = "<<((search_time-fetch_time)*100)/search_time<<" %"<<endl; 
+    // cout<< "total_search_time = "<< search_time<<" , fetch_t = "<< fetch_time << " , diff = "<<((search_time-fetch_time)*100)/search_time<<" %"<<endl; 
     return result;
 }
 
