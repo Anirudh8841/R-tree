@@ -3,7 +3,8 @@
 #include <sstream>
 #include <fstream>
 #include "rtree.h"
-
+#include <chrono> 
+using namespace std::chrono; 
 
 using namespace std;
 
@@ -55,10 +56,14 @@ int main(int argc, char const *argv[])
     ofstream outfile;
     outfile.open(outputFile);
      
+    // ofstream custom_input("custom_input.txt");
+
 	// Create a brand new file
 
 	FileHandler fh = fm.CreateFile("temp.txt");
     int count=0;
+    int queryCount=0;
+    int insertCount=0; 
     while (getline(infile, line))
     {
         count++;
@@ -81,11 +86,9 @@ int main(int argc, char const *argv[])
 
             fm.CloseFile(f);
 
-            // tree.print_t(tree.ret_root_id(),fh);
-            // fm.ClearBuffer();
-            // fm.PrintBuffer();
         } else if (op == "INSERT") {
             // continue;
+            insertCount++;
             outfile<<"INSERT"<<endl;
             outfile<<endl;
 
@@ -98,10 +101,10 @@ int main(int argc, char const *argv[])
             tree.insert(p,fh);
           
         } else if (op == "QUERY") {
-            tree.print_t(tree.ret_root_id(),fh);
-
+            queryCount++;
             vector<int> p;
             int px;
+
             while (iss >> px) {
                 p.push_back(px);
             }
@@ -121,7 +124,6 @@ int main(int argc, char const *argv[])
     fm.CloseFile (fh);
     outfile.close();
     fm.DestroyFile("temp.txt");
-
     return 0;
 }
 

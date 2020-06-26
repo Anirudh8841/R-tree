@@ -1,6 +1,9 @@
 #include "rtree.h"
+#include <chrono> 
+using namespace std::chrono; 
 
 int root_id=-1, maxCap=0 ,d=0,node_size=0,num_nodes=0,max_num_nodes=0;
+int fetch_time;
 
 
 Node fetch(int id,FileHandler& fh){
@@ -13,8 +16,6 @@ Node fetch(int id,FileHandler& fh){
     PageHandler ph = fh.PageAt(pagenum);
 
     char *data = ph.GetData ();
-
-    // cout<< "fetch  "<< fh.LastPage().GetPageNum() << " > "<<pagenum <<endl;
 
     Node node(0,-1);
 
@@ -36,9 +37,19 @@ Node fetch(int id,FileHandler& fh){
     }
 
     for(int i=0;i<maxCap;i++){
+        bool maxi=false;
         for(int j=0;j<d;j++){
             memcpy (&node.children[i].minmbr[j], &data[temp],  sizeof(int));
-            temp=temp+4;
+            if(node.children[i].minmbr[j]==INT_MAX){
+                maxi = true;
+                break;
+            }
+            else{
+                temp=temp+4;
+            }
+        }
+        if(maxi){
+            break;
         }
         for(int j=0;j<d;j++){
             memcpy (&node.children[i].maxmbr[j], &data[temp],  sizeof(int));
@@ -59,7 +70,6 @@ void save(Node node,FileHandler& fh){
     int n = fh.LastPage().GetPageNum();
     
     PageHandler ph;
-    // cout<< "save "<< n << " > "<<pagenum <<endl;
     if(pagenum == (n+1)){
         ph = fh.NewPage();
     }
@@ -71,7 +81,6 @@ void save(Node node,FileHandler& fh){
     }
 
     char *data = ph.GetData ();
-    // cout << "saving n " << node.id <<" p "<< node.parent_id<<endl;
     memcpy (&data[offset],&node.id, sizeof(int));
 
     memcpy (&data[offset+4], &node.parent_id, sizeof(int));
@@ -102,9 +111,8 @@ void save(Node node,FileHandler& fh){
         }   
     }
     fh.MarkDirty(pagenum);
-	fh.UnpinPage(pagenum);
+    fh.UnpinPage(pagenum);
     fh.FlushPages();
-	// fh.FlushPage(pagenum);
     return ;    
 }
 
@@ -124,13 +132,18 @@ long double calculateVolume(const vector<int> &minmbr, const vector<int>& maxmbr
 
 
 void updateParentOnDisk(int nodeID, int new_parentID, FileHandler& fh ){
-    // cout<<"update n "<< nodeID<<" p "<< new_parentID<<endl;
     if(nodeID==-1){
         return;
     }  
-    Node node = fetch(nodeID,fh);
-    node.parent_id = new_parentID;
-    save(node,fh);
+    int pagenum = floor(nodeID/max_num_nodes);
+    int offset = (nodeID%max_num_nodes)*node_size;
+    PageHandler ph = fh.PageAt(pagenum);
+    char *data = ph.GetData ();
+
+    memcpy (&data[offset+4], &new_parentID, sizeof(int));
+    fh.MarkDirty(pagenum);
+    fh.UnpinPage(pagenum);
+    fh.FlushPages();
 }
 
 void generateMinimum(const vector<int>& v1,const vector<int>& v2, vector<int>& result){
@@ -264,9 +277,9 @@ void addChild(Node& currNode, int childID,const vector<int> &child_minmbr,const 
                     continue; //invalid child found so skip
                 }
 
-                if(child1.minmbr[0]==INT_MAX && child1.maxmbr[0]==INT_MIN){
-                    break; //invalid child and the upcoming ones will be invalid too as j>i
-                }
+                // if(child1.minmbr[0]==INT_MAX && child1.maxmbr[0]==INT_MIN){
+                //     break; //invalid child and the upcoming ones will be invalid too as j>i
+                // }
 
                 long double euclidDist = 0.0;
                 for(int k=0; k<d; k++){
@@ -304,6 +317,19 @@ void addChild(Node& currNode, int childID,const vector<int> &child_minmbr,const 
             if(entry_eq(child,e1) || entry_eq(child,e2)){
                 continue; //already added these two
             }
+
+            if(group1.size()>=maxCap/2){
+                group2.push_back(child);
+                incorporate_child_mbr(L2,child);
+                continue;
+            }
+
+            if(group2.size()>=maxCap/2){
+                group1.push_back(child);
+                incorporate_child_mbr(L1,child);
+                continue;
+            }
+
             long double childVol = calculateVolume(child.minmbr, child.maxmbr);
             vector<int> r1,r2;
             generateMinimum(child.minmbr, L1.minmbr,r1);
@@ -446,12 +472,11 @@ void insert_and_update(Node& currNode,const vector<int>& P, FileHandler& fh){
         long double tiebreaker1Vol = LDBL_MAX; //long double because volume will be very large
 
         for(Entry child : currNode.children){
-            // cout<<"for "<<child.id<<endl;
             if(child.minmbr[0]==INT_MAX && child.maxmbr[0]==INT_MIN){
-				//means this is just a place filler child
-				//and the upcoming ones will also be place fillers
-				break;
-			}
+                //means this is just a place filler child
+                //and the upcoming ones will also be place fillers
+                break;
+            }
             //if we choose this child then how much volume do we have to increase
             //basically the difference of change in MBR's volume
             
@@ -464,7 +489,6 @@ void insert_and_update(Node& currNode,const vector<int>& P, FileHandler& fh){
             long double diff = newVol-oldVol;
 
             if(diff<volumeIncrease){
-                // cout<<"cas_1 "<< child.id <<endl;
                 min_MBR_child = child;
                 volumeIncrease = diff;
             }
@@ -472,7 +496,6 @@ void insert_and_update(Node& currNode,const vector<int>& P, FileHandler& fh){
 
                 //tie breaker 1, i.e. volumeIncrease is same so we need will choose that child which has lower volume
                 if(oldVol<tiebreaker1Vol){
-                    // cout<<"cas_2 "<< child.id <<endl;
 
                     min_MBR_child = child;
                     tiebreaker1Vol = oldVol;
@@ -497,7 +520,6 @@ void insert_and_update(Node& currNode,const vector<int>& P, FileHandler& fh){
                     // int index1 = find(currNode.children.begin(),currNode.children.begin(),min_MBR_child) - currNode.children.begin();
                     // int index2 = find(currNode.children.begin(),currNode.children.begin(),child) - currNode.children.begin();
                     if(index2<index1){
-                        // cout<<"cas_3 "<< child.id <<endl;
 
                         min_MBR_child = child;
                     }
@@ -507,14 +529,9 @@ void insert_and_update(Node& currNode,const vector<int>& P, FileHandler& fh){
         }
         //use the id of this child to traverse down the tree
         int child_id = min_MBR_child.id;
-        // cout<<"cas20 "<< child_id <<endl;
         Node nextNode = fetch(child_id,fh); //fetchNodeFromDisk is some fetch function which you have implemented
-        // cout<<"ended0  "<< currNode.id<<" "<<nextNode.id<<endl;
 
         insert_and_update(nextNode,P,fh); 
-        // cout<<"ended1  "<< currNode.id<<endl;
-
-        // Entry min_MBR_child;
 
     }
 }
@@ -551,6 +568,7 @@ void print_node(Node node){
 
 }
 
+//pass the rootID here to print the whole tree
 void print_tree(int nodeID,FileHandler&fh){
     if(nodeID==-1){
         return;
@@ -624,11 +642,6 @@ void RTree::insert(const vector<int>& p, FileHandler& fh){
     else{
         Node rootNode = fetch(root_id,fh);
         insert_and_update(rootNode, p,fh);
-
-        // cout<<" num "<<num_nodes<<endl;
-        // if()
-        // print_tree(root_id,fh);
-        
     }
     
 }
@@ -644,22 +657,11 @@ void print_vector(const vector<int>& vec){
 
 bool search(int nodeID, const vector<int>& P, FileHandler& fh,bool print_comments){
     //fetch the node node from disk using nodeID
-    if(print_comments){
-        cout<<"on que "<< nodeID<<endl; 
-        
-    }
+
     Node currNode = fetch(nodeID,fh);
-
-
     bool liesInside_currNode = true;
     for(int i=0;i<d;i++){
-        // if(nodeID==37 && print_comments){
-        //     cout<<P[i]<<" ("<<currNode.minmbr[i]<<","<<currNode.maxmbr[i]<<")"<<endl;
-        // }
         if(P[i] < currNode.minmbr[i] || P[i] > currNode.maxmbr[i]){
-            if(nodeID==146 && print_comments){
-                cout<<i<<" "<<P[i]<<" ("<<currNode.minmbr[i]<<","<<currNode.maxmbr[i]<<")"<<endl;
-            }
             liesInside_currNode = false;
             break;
         }
@@ -669,13 +671,8 @@ bool search(int nodeID, const vector<int>& P, FileHandler& fh,bool print_comment
         return false;
     }
 
-    if(print_comments){
-        cout<<"on que1 "<< nodeID<<endl; 
-    }
-    // cout << "startID: "<<nodeID<<endl;
 
     if(currNode.children[0].id==-1){
-        // cout << " CUR "<<currNode.id<<endl;
         //means the currNode is a leaf and its children are all points
 
         //go over these children points and check whether our search point is among one of them or not
@@ -684,32 +681,13 @@ bool search(int nodeID, const vector<int>& P, FileHandler& fh,bool print_comment
             if(child.minmbr[0]==INT_MAX && child.maxmbr[0]==INT_MIN){
                 //means this is just a place filler child
                 //and the upcoming ones will also be place fillers
-                continue;
-                // return false;
+                // continue;
+                return false;
             }
             else{
                 //point is valid
                 //check whether this point is equal to P
-                
-                bool equals = true;
-                for(int i=0;i<d;i++){
-                    if(print_comments&& nodeID==146){
-                        cout<<"on que2 "<<i <<" "<< child.minmbr[i]<<" , "<<child.maxmbr[i]<<" p "<<P[i]<<endl; 
-                    }
-                    if(child.minmbr[i]!=P[i] || child.maxmbr[i]!=P[i]){
-                        if(print_comments&& nodeID==146){
-                            cout<<"on que2 "<<i <<" "<< child.minmbr[i]<<" , "<<child.maxmbr[i]<<" p "<<P[i]<<endl; 
-                        }
-                        equals = false;
-                        break;
-                    }
-                }
-               
-                if(equals){
-                //     if(print_comments&& nodeID==146){
-                // //    cout<<" ch "<<child.id<< <<endl;
-                //         // cout<<"on que2 "<<i <<" "<< child.minmbr[i]<<" , "<<child.maxmbr[i]<<" p "<<P[i]<<endl; 
-                //     }
+                if(child.minmbr==P){
                     return true;
                 }
             }
@@ -726,11 +704,19 @@ bool search(int nodeID, const vector<int>& P, FileHandler& fh,bool print_comment
             if(child.minmbr[0]==INT_MAX && child.maxmbr[0]==INT_MIN){
                 //means this is just a place filler child
                 //and the upcoming ones will also be place fillers
-                // break;
-                continue;
+                break;
+                // continue;
             }
             else{
-                if(search(child.id,P,fh,print_comments)){
+                bool liesInside_child=true;
+                for(int i=0;i<d;i++){
+                    if(P[i] < child.minmbr[i] || P[i] > child.maxmbr[i]){
+
+                        liesInside_child = false;
+                        break;
+                    }
+                }
+                if(liesInside_child && search(child.id,P,fh,print_comments)){
                     return true;
                 }
             }
@@ -743,70 +729,59 @@ bool search(int nodeID, const vector<int>& P, FileHandler& fh,bool print_comment
 }
 
 bool RTree::query(const vector<int>& P, FileHandler& fh,bool print_comments){
-	//fetch the node node from disk using nodeID
-    // bool print_comments=false;
-    // if(P[0]==1940312525){
-    //     cout<<"ed"<<endl;
-    //     print_comments=true;
-    // }
+    //fetch the node node from disk using nodeID
+
     return search(root_id,P,fh,print_comments);
 }
 
-// need to edit
+
 void buildRecursiveTree(int startNodeID, int endNodeID, vector<int> &nodes_count,FileHandler &fh){
     
-    // cout<<" entered  "<<endl;
-	if(endNodeID-startNodeID <= 1){
-		//we have reached root so stop
-		return;
-	}
-	vector<Node> nodes_collected; 
-	for(int currNodeID=startNodeID; currNodeID<endNodeID; currNodeID++){
-		Node childNode = fetch(currNodeID,fh);
-		nodes_collected.push_back(childNode);
+    if(endNodeID-startNodeID <= 1){
+        //we have reached root so stop
+        return;
+    }
+    vector<Node> nodes_collected; 
+    for(int currNodeID=startNodeID; currNodeID<endNodeID; currNodeID++){
+        Node childNode = fetch(currNodeID,fh);
+        nodes_collected.push_back(childNode);
 
-		// if(nodes_collected.size()== min(maxCap, endNodeID-currNodeID)){ // min(maxCap, remaining nodes)
-		if(nodes_collected.size() == maxCap || currNodeID==endNodeID-1){// min(maxCap, remaining nodes)
+        // if(nodes_collected.size()== min(maxCap, endNodeID-currNodeID)){ // min(maxCap, remaining nodes)
+        if(nodes_collected.size() == maxCap || currNodeID==endNodeID-1){// min(maxCap, remaining nodes)
 
-			//create a parent for this block of nodes_collected
-			Node parentNode(nodes_count[0], -1);
-            // cout<<"here "<< nodes_count[0] <<endl;
-			nodes_count[0]++; //update the variable nodes_count using ref, check for syntax I may have done mistake
+            //create a parent for this block of nodes_collected
+            Node parentNode(nodes_count[0], -1);
+            nodes_count[0]++; //update the variable nodes_count using ref, check for syntax I may have done mistake
 
-			//assign the children to this parent node as nodes_collected
-			for(int i=0;i<nodes_collected.size();i++){
-				Entry newChild(nodes_collected[i].id);
-				newChild.minmbr = nodes_collected[i].minmbr;
-				newChild.maxmbr = nodes_collected[i].maxmbr;
-				parentNode.children[i] = newChild;
+            //assign the children to this parent node as nodes_collected
+            for(int i=0;i<nodes_collected.size();i++){
+                Entry newChild(nodes_collected[i].id);
+                newChild.minmbr = nodes_collected[i].minmbr;
+                newChild.maxmbr = nodes_collected[i].maxmbr;
+                parentNode.children[i] = newChild;
                 parentNode.children[i].id = nodes_collected[i].id;
-				//also update the parentID inside the nodes in nodes_collected
-				nodes_collected[i].parent_id = parentNode.id;
-				save(nodes_collected[i],fh); //since we changed parent so save this node to page
-                // cout<<"printing inrec"<<endl;
-                // print_node(nodes_collected[i]);
+                //also update the parentID inside the nodes in nodes_collected
+                nodes_collected[i].parent_id = parentNode.id;
+                save(nodes_collected[i],fh); //since we changed parent so save this node to page
             }
 
-			//update the MBR of this parent node by iterating the children
-			for(Entry child: parentNode.children){
-				for(int i=0; i<d; i++){
-					parentNode.minmbr[i] = min(parentNode.minmbr[i], child.minmbr[i]);
-					parentNode.maxmbr[i] = max(parentNode.maxmbr[i], child.maxmbr[i]);
-				}
-			}
+            //update the MBR of this parent node by iterating the children
+            for(Entry child: parentNode.children){
+                for(int i=0; i<d; i++){
+                    parentNode.minmbr[i] = min(parentNode.minmbr[i], child.minmbr[i]);
+                    parentNode.maxmbr[i] = max(parentNode.maxmbr[i], child.maxmbr[i]);
+                }
+            }
 
-			save(parentNode,fh);
+            save(parentNode,fh);
             nodes_collected.clear();
-            //  cout<<"succ  inrec"<<endl;
-                // print_node(parentNode);
 
-		} 
-	}
-	int start = endNodeID+1;
-	int end = nodes_count[0];
+        } 
+    }
+    int start = endNodeID;
+    int end = nodes_count[0];
     
-// cout<<" compl "<< start << end <<endl;
-	buildRecursiveTree(start,end,nodes_count,fh);
+    buildRecursiveTree(start,end,nodes_count,fh);
 }
 
 
@@ -814,78 +789,77 @@ void buildRecursiveTree(int startNodeID, int endNodeID, vector<int> &nodes_count
 
 void RTree::bulkload(int numPoints,FileHandler& fo,FileHandler& fh){
     int m = floor(PAGE_CONTENT_SIZE/sizeof(int));
+    m = (m/d)*d;
     int nodes_count=0;
     int numPointsRead = 0;
     vector< vector<int>> points_collected;
     vector<int> ongoingPoint(d,0);
-	int ongoingPointIndex=0;
+    int ongoingPointIndex=0;
 
-	PageHandler ph = fo.PageAt(0);
-	int last_page_read = 0;
-	int locationInPage=0;
-	char *data = ph.GetData ();
-    // cout<<"INSERT";
-	while(numPointsRead<numPoints){
+    PageHandler ph = fo.PageAt(0);
+    int last_page_read = 0;
+    int locationInPage=0;
+    char *data = ph.GetData ();
 
-		if (locationInPage<m){
+    Node leafNode (nodes_count, -1);
+    nodes_count++;
+    int ongoingChildIndex=0;
 
-			//fetch 1 int and store it in ongoingPoint vector at location ongoingPointIndex
-			memcpy (&ongoingPoint[ongoingPointIndex],&data[4*locationInPage],  sizeof(int));
-            // cout<<" "<<ongoingPoint[ongoingPointIndex];
-			locationInPage+=1;
-			ongoingPointIndex++;
+    while(numPointsRead<numPoints){
 
-			if(ongoingPointIndex==d){
+        if (locationInPage<m){
 
-                // cout<<endl;
-                // cout<<"INSERT";
-				//means completed one d dimensional point
-				numPointsRead++;
-				points_collected.push_back(ongoingPoint);
-				// ongoingPoint = new vector<int>(d,0);  //create  new point  doubt 1
-				ongoingPointIndex = 0;
+            //fetch 1 int and store it in ongoingPoint vector at location ongoingPointIndex
+            memcpy (&ongoingPoint[ongoingPointIndex],&data[4*locationInPage],  sizeof(int));
+            locationInPage+=1;
+            ongoingPointIndex++;
 
-				//check whether we have formed a block
-                if(points_collected.size() == maxCap || numPointsRead==numPoints){// min(maxCap, remaining points)
-					//create a new leaf node here
+            if(ongoingPointIndex==d){
 
-					Node leafNode (nodes_count, -1);
-                    nodes_count++;
-					//assign the children to this leaf node as points_collected
-					for(int i=0;i<points_collected.size();i++){
-						Entry newChild(-1);
-                        // cout<< "val1 "<<points_collected[i][0]<<endl;
-						newChild.minmbr = points_collected[i];
-						newChild.maxmbr = points_collected[i];
-						leafNode.children[i] = newChild;
-					}
-					//update the MBR of this leaf node by iterating the children
-					for(Entry child: leafNode.children){
-						for(int i=0; i<d; i++){
-							leafNode.minmbr[i] = min(leafNode.minmbr[i], child.minmbr[i]);
-							leafNode.maxmbr[i] = max(leafNode.maxmbr[i], child.maxmbr[i]);
-						}
-					}
-					save(leafNode,fh);
-                    // print_node(leafNode);
-					points_collected.clear();
-				}
-			}
+                Entry newChild(-1);
+                for(int i=0; i<d; i++){
+                    int p = ongoingPoint[i];
+                    newChild.minmbr[i] = p;
+                    newChild.maxmbr[i] = p;
 
-			
-		}
+                    leafNode.minmbr[i] = min(leafNode.minmbr[i], p);
+                    leafNode.maxmbr[i] = max(leafNode.maxmbr[i], p);
+                }
+                leafNode.children[ongoingChildIndex] = newChild;
+                ongoingChildIndex++;
+
+                
+
+                numPointsRead++;
+                ongoingPointIndex = 0;
+                //check whether we have formed a block
+                if(ongoingChildIndex == maxCap || numPointsRead==numPoints){// min(maxCap, remaining points)
+                    //create a new leaf node here
+                    save(leafNode,fh);
+                    ongoingChildIndex = 0;
+                    if(numPointsRead!=numPoints){
+                        leafNode = Node(nodes_count, -1);
+                        nodes_count++;    
+                    }
+                    
+                }
+            }
+
+            
+        }
 
 
-		else{
-			//we have completed a page need to start reading from next page
+        else{
+            //we have completed a page need to start reading from next page
             fo.UnpinPage(last_page_read);
-
-			ph = fo.NextPage(last_page_read);
+            fo.FlushPages();
+            ongoingPointIndex = 0;
+            ph = fo.NextPage(last_page_read);
             last_page_read++;
-			data = ph.GetData();
-			locationInPage = 0; //update the location in page
-		}
-	}
+            data = ph.GetData();
+            locationInPage = 0; //update the location in page
+        }
+    }
     
     fo.UnpinPage(last_page_read);
     fo.FlushPages();
@@ -893,16 +867,13 @@ void RTree::bulkload(int numPoints,FileHandler& fo,FileHandler& fh){
 
 
 
-	//at this point we have stored all the points in the leaf nodes
-	int start = 0;
-	int end = nodes_count;
+    //at this point we have stored all the points in the leaf nodes
+    int start = 0;
+    int end = nodes_count;
     vector<int>n_c;
     n_c.push_back(nodes_count);
-    // cout<<" num_node1 "<< nodes_count<<endl;
-	buildRecursiveTree(start,end, n_c,fh);
-    // cout<<" num_nodes2 "<<n_c[0]<<endls;
+    buildRecursiveTree(start,end, n_c,fh);
     root_id=n_c[0]-1;
     num_nodes = n_c[0];
-    // print_tree(,fh);
 
 }

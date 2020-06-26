@@ -5,7 +5,7 @@ sampleobjects = buffer_manager.o file_manager.o rtree.o main.o
 # 	    g++ -std=c++11 -o sample_run $(sampleobjects)
 
 rtree : $(sampleobjects)
-	     g++ -std=c++11 -o rtree $(sampleobjects)
+		g++ -std=c++11 -o rtree $(sampleobjects)
 
 # sample_run.o : sample_run.cpp
 # 	g++ -std=c++11 -c sample_run.cpp
@@ -17,10 +17,10 @@ file_manager.o : file_manager.cpp
 	g++ -std=c++11 -c file_manager.cpp
 
 rtree.o : rtree.cpp
-	g++ -std=c++11 -c -g rtree.cpp
+	g++ -std=c++11 -c rtree.cpp
 
 main.o : main.cpp
-	g++ -std=c++11 -c -g main.cpp
+	g++ -std=c++11 -c main.cpp
 
 clean :
 	rm -f *.o

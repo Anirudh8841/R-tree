@@ -16,10 +16,7 @@ struct Entry
     vector<int> minmbr;
     vector<int> maxmbr;
     int id;
-    Entry(){
-        // minmbr =  vector<int>(d,INT_MAX);
-        // maxmbr =  vector<int>(d,INT_MIN);
-    }
+    Entry(){}
     Entry(int i){
         minmbr =  vector<int>(d,INT_MAX);
         maxmbr =  vector<int>(d,INT_MIN);
@@ -48,7 +45,6 @@ public:
         for(int i=0;i<maxCap;i++){
             children.push_back(e); // all leaves
         }
-        // cout<<"in "<< children[0].id<<endl; 
     }
     ~Node(){
         minmbr.clear();
@@ -62,10 +58,6 @@ public:
 class RTree
 {
 public:
-    // RTree();
-    // we will use initial root as 0 and leaf node children -1
-    // int root;
-    // Node fetch(int id, FileHandler& fh);
 
     RTree(int id, int maxChild,int dimension)
     {
@@ -82,7 +74,6 @@ public:
     void print_t(int nodeID,FileHandler& fh);
     int ret_root_id(); 
     ~RTree(){};
-    // void insert(vector<int> p, FileManager fm,FileHandler fh); // at the end - update root
 
 };
 
